@@ -1,11 +1,28 @@
 import Footer from "../component/Footer"
-import { useUser } from '@auth0/nextjs-auth0';
-
+import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
 
 const login = () => {
-  const {user, error, isLoading}  = useUser()
 
-  
+  const client = new ApolloClient({
+    uri: 'https://thegraph.com/studio/subgraph/own_your_property2/playground',
+    cache: new InMemoryCache(),
+  });
+  // const client = ...
+
+client
+  .query({
+    query: gql`
+        {propertyMinteds(first: 5) {
+    id
+    tokenId
+    ownerAddress
+    propertyAddress
+    s_TokenUri
+        }
+      }
+    `,
+  })
+  .then((result) => console.log(result));
 
     return (
       <div>

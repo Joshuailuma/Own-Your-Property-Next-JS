@@ -2,19 +2,22 @@ import Link from 'next/link'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import React, { useState, useEffect, useRef } from 'react'
-import { useSession, signIn, signOut } from "next-auth/react"
+import { useWeb3Contract, useMoralis } from 'react-moralis'
 import {ConnectButton} from "@web3uikit/web3"
 
 //We shall eventually bring this to our layout since we want it to be on every page
 const Nav = () => {
   const myRef = useRef()
   const [showNav, setShowNav] = useState(false)
-  const { data: session } = useSession()
+  const {isWeb3Enabled} = useMoralis()
 
    
-  // useEffect(()=>{
-  //   myRef.current.classList.toggle(styles.open) // and more..
-  // })
+  useEffect(()=>{
+    if(isWeb3Enabled){
+
+    }
+  }), [isWeb3Enabled]
+
 let i = false
 
   const btnToggle = () => {
@@ -37,7 +40,7 @@ let i = false
   };
 
   
-  if (session){
+  if (isWeb3Enabled){
     return (
     <nav className="relative container mx-auto p-6">
         {/* Flex Container */}
@@ -50,8 +53,7 @@ let i = false
           {/* Menu Items */}
           <div class="hidden md:flex md:space-x-6">
             <Link className="hover:text-brightRed" href="/">Home</Link> 
-            <Link class='hover:text-darkGrayishBlue' href="/products">My Properties</Link>
-            <button class='hover:text-darkGrayishBlue' onClick={signOut}>Logout</button>
+            <Link class='hover:text-darkGrayishBlue' href="/myProperties">My Properties</Link>
             <Link class='hover:text-darkGrayishBlue' href="/about">About</Link>
             </div>
         {/* Button */}
@@ -98,7 +100,7 @@ let i = false
              {/* Menu Items */}
              <div class="hidden md:flex md:space-x-6">
                <Link className="hover:text-brightRed" href="/">Home</Link> 
-               <Link class="hover:text-darkGrayishBlue" href={"/products"}>My Properties</Link>
+               <Link class="hover:text-darkGrayishBlue" href={"/myProperties"}>Myyyyyy</Link>
                <Link class='hover:text-darkGrayishBlue' href="/about">About</Link>
                </div>
            {/* Button */}
@@ -124,7 +126,6 @@ let i = false
              id="menu" className={ showNav ? "absolute flex flex-col  items-center self-end py-8 mt-10 space-y-6 font-bold bg-white sm:w-auto sm:self-center left-6 right-6 drop-shadow-md" : "absolute flex-col items-center hidden self-end py-8 mt-10 space-y-6 font-bold bg-white sm:w-auto sm:self-center left-6 right-6 drop-shadow-md"  }
              class="absolute flex-col  items-center hidden self-end py-8 mt-10 space-y-6 font-bold bg-white sm:w-auto sm:self-center left-6 right-6 drop-shadow-md">
              <Link href="/">Home</Link>
-             <button onClick={signIn}>Login</button>
              <Link href="/about">About</Link>
            </div>
          </div>

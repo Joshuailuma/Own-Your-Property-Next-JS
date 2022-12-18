@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.2",
     "@auth0/nextjs-auth0": "^1.9.2",
     "@pinata/sdk": "^2.1.0",
     "@walletconnect/web3-provider": "^1.8.0",
@@ -19,6 +20,8 @@
     "axios": "^1.2.1",
     "dotenv": "^16.0.3",
     "formidable": "^2.1.1",
+    "graphql": "^16.6.0",
+    "keccak256": "^1.0.6",
     "magic-sdk": "^10.1.0",
     "moralis-v1": "^1.11.0",
     "next": "13.0.3",

@@ -1,16 +1,24 @@
 import '../styles/globals.css'
 import Layout from '../component/Layout'
-import {SessionProvider} from 'next-auth/react'
 import { MoralisProvider } from 'react-moralis'
+import { NotificationProvider } from '@web3uikit/core'
+import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client'
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  uri: "https://api.studio.thegraph.com/query/39622/own_your_property2/v0.0.82",
+})
 function MyApp({ Component, pageProps: { session, ...pageProps }, }) {
   return(
-    <SessionProvider session={session}>
       <MoralisProvider initializeOnMount={false}>
-       <Layout> 
+        <ApolloProvider client={client}>
+        <NotificationProvider>
+        <Layout> 
     <Component {...pageProps} />
   </Layout> 
+        </NotificationProvider>
+        </ApolloProvider>
   </MoralisProvider>
-  </SessionProvider>
     )
 }
 
