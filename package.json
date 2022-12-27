@@ -19,6 +19,7 @@
     "@web3uikit/web3": "^0.2.2",
     "axios": "^1.2.1",
     "dotenv": "^16.0.3",
+    "ethers": "^5.7.2",
     "formidable": "^2.1.1",
     "graphql": "^16.6.0",
     "keccak256": "^1.0.6",

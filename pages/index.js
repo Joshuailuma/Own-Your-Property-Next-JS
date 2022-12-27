@@ -2,8 +2,69 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Footer from '../component/Footer'
 import styles from '../styles/Home.module.css'
+import { ethers } from 'ethers'
+import { useWeb3Contract, useMoralis } from "react-moralis"
+import networkMapping from "../constants/networkMapping.json"
+import BasicNft from "../constants/BasicNft.json"
 
 export default function Home() {
+
+  const { isWeb3Enabled, account, chainId } = useMoralis()
+  const chainString = chainId ? parseInt(chainId).toString() : "31337"
+
+  const provider = new ethers.providers.JsonRpcProvider('https://eth-goerli.alchemyapi.io/v2/6mNAPvD9Gse0BojzyDSBrNb2S_1dOTCa')
+    const signer = provider.getSigner(account)
+    // const contractAddress = networkMapping[chainString].OwnYourProperty[0]
+    const contractAddress = "0xF74EBb7bB8883E22a8Be30F8C2EDaF7f4B58f360"
+    const contractAbi = BasicNft
+    const deployedContract =  new ethers.Contract("0xb173E4884577128976D6048E47B9da396c3d6547", contractAbi, provider) //Get the contract
+    // Connect signer with signer
+    const contractWithSigner = deployedContract.connect(signer);
+    // console.log("======Minting=====");
+    // console.log(contractWithSigner);
+    
+  const { runContractFunction: getTokenUri } = useWeb3Contract({
+    abi: contractAbi,
+    contractAddress: contractAddress, // specify the networkId
+    functionName: "getTokenUri",
+    params: {tokenId: 1},
+  })
+  const { runContractFunction: mintNft } = useWeb3Contract({
+    abi: contractAbi,
+    contractAddress: contractAddress, // specify the networkId
+    functionName: "mintNft",
+    params: {tokenUri: "ipfsMetadataHash1234567"},
+  })
+ const doSomething = async(e)=> {
+  const blockhainStoreResult = await mintNft().catch(error =>{console.log(error);})
+
+  // const i = await getTokenUri()
+  console.log(blockhainStoreResult);
+    // const provider = new ethers.providers.JsonRpcProvider('https://eth-goerli.alchemyapi.io/v2/6mNAPvD9Gse0BojzyDSBrNb2S_1dOTCa')
+    // const signer = provider.getSigner(account)
+    // const contractAddress = networkMapping[chainString].OwnYourProperty[0]
+    // const contractAbi = BasicNft
+    // const deployedContract =  new ethers.Contract(contractAddress, contractAbi, provider) //Get the contract
+    // Connect signer with signer
+    // const contractWithSigner = deployedContract.connect(signer);
+    // console.log("======Minting=====");
+    // console.log(contractWithSigner);
+
+    // const mintedProperty = await contractWithSigner.mintNft("ipfsImageHash")
+    // console.log("======Waiting for another block=====");
+
+    // const txnReceipt = await mintedProperty.wait(1)
+    // console.log("======Emitting eventk=====");
+
+    // const tokenId = txnReceipt.events[0].args.tokenId
+
+    // console.log(txnReceipt);
+
+    
+
+  
+    }
+
   return (
     <div id='body'>
       {/* Nav bar will display on all screens */}
@@ -23,10 +84,9 @@ export default function Home() {
              and allows the public verify that you are the owner of your property during sale or transfer.
             </p>
             <div class="flex justify-center md:justify-start">
-            <a
-              href="#"
+            <button onClick={doSomething}
               class="p-3 px-6 pt-2 text-white bg-brightRed rounded-full baseline hover:bg-brightRedLight"
-              >Get Started</a>
+              >Get Started</button>
           </div>
           </div>
 

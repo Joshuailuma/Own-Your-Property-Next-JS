@@ -1,15 +1,14 @@
-import React, { useState, useEffect, ChangeEvent, MouseEvent} from 'react'
+import React, { useState, useEffect, ChangeEvent, MouseEvent, useRef} from 'react'
 import Footer from '../component/Footer'
-import { useSession, signIn, signOut } from "next-auth/react"
-import { useRouter } from 'next/router'
 import Image from 'next/image'
 import axios from "axios";
 import SimpleProgressBar from '../component/SimpleProgressBar'
+import { useWeb3Contract, useMoralis } from "react-moralis"
+import networkMapping from "../constants/networkMapping.json"
+import BasicNft from "../constants/BasicNft.json"
 
 function products() {
-  const router = useRouter()
-  const {status, data } = useSession()
-  
+
   const [name, setName] = useState('')
   const [serialNumber, setSerialNumber] = useState('')
   const [description, setDescription] = useState('')
@@ -17,16 +16,23 @@ function products() {
   const [remaining, setRemaining] = useState(0);
 
 const [isUploaded, setIsUploaded] = useState(false) //Change state based on the new
+const [isBlockUploaded, setIsBlockUploaded] = useState(false) //Change state based on the new
 
 
 const [file, setFile] = useState(null);
 const [previewUrl, setPreviewUrl] = useState("");
 const [ipfsImageHash, setIpfsImageHash] = useState("")
+const [ipfsMetadataHash, setIpfsMetadataHash] = useState("")
+const ipfsMetadataHashRef = useRef(ipfsMetadataHash)
+
+const { isWeb3Enabled, account, chainId } = useMoralis()
+const chainString = chainId ? parseInt(chainId).toString() : "31337"
+
 
 //Tell if its uploaded or not
-useEffect(()=>{
-console.log(isUploaded);
-}, [isUploaded])
+// useEffect(()=>{
+// console.log(isUploaded);
+// }, [isUploaded])
 
 let metadataTemplate = {
   name: name,
@@ -38,7 +44,8 @@ let metadataTemplate = {
 
 
 const onSubmit = (e)=> {
-onUploadMetaData(e)
+  e.preventDefault()
+  onUploadMetaData()
 }
 
 const preventDefault = (e)=> {
@@ -47,8 +54,8 @@ const preventDefault = (e)=> {
 
 // defining the chooseImage handler
   const onChooseImage = (e) => {
-
-    const fileInput = e.target; //File we chose
+    if(isWeb3Enabled){
+      const fileInput = e.target; //File we chose
 
     if (!fileInput.files) {
       alert("No file was chosen");
@@ -77,6 +84,11 @@ const preventDefault = (e)=> {
     /** Reset file input */
     e.currentTarget.type = "text";
     e.currentTarget.type = "file";
+
+    }else{
+      alert("Please first connect a wallet")
+    }
+    
   } //Done with choose image
 
   const onCancelFile = (e) => {
@@ -94,74 +106,113 @@ const preventDefault = (e)=> {
     if (!file) {
       return;
     }
+    if(isWeb3Enabled){
+      try {
+        let startAt = Date.now(); // To keep track of the upload start time
+        let formData = new FormData();
+        formData.append("media", file);
   
-    try {
-      let startAt = Date.now(); // To keep track of the upload start time
-      let formData = new FormData();
-      formData.append("media", file);
-
-  // Add the onUploadProgress option
-const options = {
-  onUploadProgress: (progressEvent) => {
-    const { loaded, total } = progressEvent;
-
-    const percentage = (progressEvent.loaded * 100) / progressEvent.total;
-    setProgress(+percentage.toFixed(2));
-    // Calculate the progress duration
-    const timeElapsed = Date.now() - startAt;
-    const uploadSpeed = loaded / timeElapsed;
-    const duration = (total - loaded) / uploadSpeed;
-    setRemaining(duration);
-  }
-}
-      
-      const {data} = await axios.post("/api/uploadImage", formData, options);
+    // Add the onUploadProgress option
+  const options = {
+    onUploadProgress: (progressEvent) => {
+      const { loaded, total } = progressEvent;
   
-  
-      
-      alert("File was uploaded successfully:", data)
-      let ipfsHashImage = data.data.response.IpfsHash
-      // CHange submit button text, if the upload was successful and have gotten an ipfs hash
-      if(ipfsHashImage != "undefined"){
-        setIsUploaded(isUploaded => !isUploaded)
-        setIpfsImageHash(ipfsHashImage)
+      const percentage = (progressEvent.loaded * 100) / progressEvent.total;
+      setProgress(+percentage.toFixed(2));
+      // Calculate the progress duration
+      const timeElapsed = Date.now() - startAt;
+      const uploadSpeed = loaded / timeElapsed;
+      const duration = (total - loaded) / uploadSpeed;
+      setRemaining(duration);
+    }
+  }       
+        
+  const {data} = await axios.post("/api/uploadImage", formData, options);
+           
+        alert("Photo was uploaded successfully", data)
+        let ipfsHashImage = data.data.response.IpfsHash
+        // CHange submit button text, if the upload was successful and have gotten an ipfs hash
+        if(ipfsHashImage != "undefined"){
+          setIsUploaded(true)
+          setIpfsImageHash(`ipfs://${ipfsHashImage}`)
+          console.log(data);
+        }
+             
+    //Gotten the ipfs hash
+        console.log("File was uploaded successfully:", data.data.response.IpfsHash);
+      } catch (e) {
+        //Error in uploading file
+        console.error(e);
+        const error =
+          e.response && e.response.data
+            ? e.response.data.error
+            : "Sorry! something went wrong.";
+        alert(error);
       }
-  //Gotten the ipfs hash
-      console.log("File was uploaded successfully:", data.data.response.IpfsHash);
-    } catch (e) {
-      //Error in uploading file
-      console.error(e);
-      const error =
-        e.response && e.response.data
-          ? e.response.data.error
-          : "Sorry! something went wrong.";
-      alert(error);
+
+    } else{
+      alert("Please connect an account")
     }
   }; // DOne with upload Image file
 
+
   const onUploadMetaData = async (e) => {
-    e.preventDefault();
-  
-    try {
-      console.log(metadataTemplate);
-      
-    const {data} = await axios.post('/api/uploadMetadata', metadataTemplate);
-       
-      alert("Details was uploaded successfully:", data)
+    console.log("Uploading metadata");
 
-      //Maybe emit an event here that graphQL should take note of
-      // let ipfsHashImage = data.data.response.IpfsHash
-      console.log("Details was uploaded successfully:", data);
+    if(isWeb3Enabled){
+      try { 
+        const {data} = await axios.post('/api/uploadMetadata', metadataTemplate);
+       const metadataHash = data.data.IpfsHash
+    
+       ipfsMetadataHashRef.current = `ipfs://${metadataHash}`
+         setIpfsMetadataHash(ipfsMetadataHashRef.current)
+          
+         alert("Details uploaded")
+        console.log(`ipfsMetadataHash is ${ipfsMetadataHash}`);
+        setIsBlockUploaded(true)
+    
+      //Gotten the ipfs hash
+          // console.log("Details was uploaded successfully:", ipfsHashImage);
+        } catch (e) {
+          //Error in uploading details
+          console.error(e);
+         const error = "Sorry! something went wrong.";
+          alert(error);
+        }
+    } else{
+      alert("Please connect a wallet")
+    }    
+  }
 
-  //Gotten the ipfs hash
-      // console.log("Details was uploaded successfully:", ipfsHashImage);
-    } catch (e) {
-      //Error in uploading details
-      console.error(e);
-     const error = "Sorry! something went wrong.";
-      alert(error);
+  // Function that does all the property storage in blochain
+  const contractAddress = networkMapping[chainString].TransferProperty[0]
+
+    const contractAbi = BasicNft
+
+    const { runContractFunction: mintNft } = useWeb3Contract({
+      abi: contractAbi,
+      contractAddress: contractAddress, // specify the networkId
+      functionName: "mintNft",
+      params: {tokenUri: ipfsMetadataHash},
+    })
+
+    const uploadToBlockchain =async (e)=>{
+      e.preventDefault()
+      if(isWeb3Enabled){
+
+        // Store property on the blockchain and Emit an event
+      const blockhainStoreResult = await mintNft()
+      if(blockhainStoreResult != "undefined"){
+       alert("Stored succesfully in blockchain")
+        console.log(blockhainStoreResult);
+     } else{
+        alert("Blockchain storing failed")
+ 
+      }
+      } else{
+        alert("Please first connect a wallet")
+      }
     }
-  };
 
 
 return (
@@ -178,11 +229,11 @@ return (
               <label htmlFor="" className="text-left">Name</label>
               <input
                 type='text'
+                required maxLength={"50"}
                 class="px-6 py-3 align-middle rounded-lg border-solid outline-double	w-80"
                 placeholder="E.g IPhone 14 pro" value={name} 
                 onChange={(e)=> setName(e.target.value)} onSubmit={preventDefault}
               />
-
 
 
             {/* Serial no */}
@@ -190,6 +241,7 @@ return (
           <label htmlFor="" className="text-left">Serial number</label>
               <input
                 type='text'
+                required maxLength={"50"}
                 class="px-6 py-3 rounded-lg border-solid outline-double	w-80"
                 placeholder="Enter the serial No" value={serialNumber} 
                 onChange={(e)=> setSerialNumber(e.target.value)}
@@ -200,28 +252,12 @@ return (
           <label htmlFor="" className="text-left">Description</label>
               <input
                 type='text'
+                required maxLength={"500"}
                 class="px-6 py-3 rounded-lg border-solid outline-double	w-80"
                 placeholder="Give us more details"
                 value={description} 
                 onChange={(e)=> setDescription(e.target.value)}
               />
-
-              {/* Image
-              <label htmlFor="" className="text-left">Image</label>
-              <input
-                type='file'
-              />
-              <div className='w-40 aspect-video rounded items-center
-               justify-center border-2 border-dashed cursor-pointer mb-4' >
-                
-                {
-                  selectedImage ? <img src={selectedImage}/> : <span>Select image</span>
-
-                }
-
-              </div> */}
-
- 
               </div>
 
               {/* Upload image. If a file has been selected, convert and view it in a preview URL*/}
@@ -287,8 +323,12 @@ return (
 
 
         {/* <FileUpload className={'justify-center  mt-6'} name="demo" url="./api/upload" maxFileSize="3000000" onError={uploadSuccess} accept="image/*" onUpload={uploadFailed}></FileUpload> */}
-              <input type="submit" disabled={isUploaded} value={isUploaded ? "Upload image first": "Submit"} className="px-16 mb-12 py-2 mt-4 ml-12 text-white rounded-full bg-brightRed hover:bg-brightRedLight focus:outline-none" />
+              <input type="submit" disabled={!isUploaded} value={isUploaded ? "Upload details" : "Upload image first"} className="px-16 mb-12 py-2 mt-4 ml-12 text-white rounded-full bg-brightRed hover:bg-brightRedLight focus:outline-none" />
+
             </form>
+            <button onClick={uploadToBlockchain} disabled={!isBlockUploaded}  className="px-16 mb-12 py-2 mt-4 ml-12 text-white rounded-full bg-brightRed hover:bg-brightRedLight focus:outline-none">
+            {isBlockUploaded ? "Finally upload to blockchain" : "Upload Details first"}
+               </button>
 
         </section>
 
