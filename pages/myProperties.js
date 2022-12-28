@@ -16,8 +16,16 @@ query GetPropertyMinted($account: ID!) {
     ownerAddress
     propertyAddress
   }
+
+  itemSolds(first: 5, where: { ownerAddress: $account }) {
+     id
+    tokenId
+    ownerAddress
+    propertyAddress
+  }
 }
 `;
+
 
 
 function myProperties() {

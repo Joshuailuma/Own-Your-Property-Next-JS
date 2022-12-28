@@ -16,6 +16,7 @@ function products() {
   const [remaining, setRemaining] = useState(0);
 
 const [isUploaded, setIsUploaded] = useState(false) //Change state based on the new
+const [isMetadataUploaded, setIsMetadataUploaded] = useState(false) //Change state based on the new
 const [isBlockUploaded, setIsBlockUploaded] = useState(false) //Change state based on the new
 
 
@@ -24,15 +25,11 @@ const [previewUrl, setPreviewUrl] = useState("");
 const [ipfsImageHash, setIpfsImageHash] = useState("")
 const [ipfsMetadataHash, setIpfsMetadataHash] = useState("")
 const ipfsMetadataHashRef = useRef(ipfsMetadataHash)
+const [tokenId, setTokenId] = useState("")
 
 const { isWeb3Enabled, account, chainId } = useMoralis()
 const chainString = chainId ? parseInt(chainId).toString() : "31337"
 
-
-//Tell if its uploaded or not
-// useEffect(()=>{
-// console.log(isUploaded);
-// }, [isUploaded])
 
 let metadataTemplate = {
   name: name,
@@ -51,7 +48,9 @@ const onSubmit = (e)=> {
 const preventDefault = (e)=> {
   e.preventDefault()
   }
-
+  /*
+    Function to choose image
+  */
 // defining the chooseImage handler
   const onChooseImage = (e) => {
     if(isWeb3Enabled){
@@ -91,6 +90,9 @@ const preventDefault = (e)=> {
     
   } //Done with choose image
 
+  /*
+    Function to Cancel Image upload
+  */
   const onCancelFile = (e) => {
     e.preventDefault();
     if (!previewUrl && !file) {
@@ -99,6 +101,10 @@ const preventDefault = (e)=> {
     setFile(null);
     setPreviewUrl(null);
   };
+
+  /*
+    Function to upload Image
+  */
 
   const onUploadImage = async (e) => {
     e.preventDefault();
@@ -156,6 +162,9 @@ const preventDefault = (e)=> {
   }; // DOne with upload Image file
 
 
+  /*
+    Function to upload Metadata
+  */
   const onUploadMetaData = async (e) => {
     console.log("Uploading metadata");
 
@@ -169,7 +178,7 @@ const preventDefault = (e)=> {
           
          alert("Details uploaded")
         console.log(`ipfsMetadataHash is ${ipfsMetadataHash}`);
-        setIsBlockUploaded(true)
+        setIsMetadataUploaded(true)
     
       //Gotten the ipfs hash
           // console.log("Details was uploaded successfully:", ipfsHashImage);
@@ -184,16 +193,32 @@ const preventDefault = (e)=> {
     }    
   }
 
-  // Function that does all the property storage in blochain
-  const contractAddress = networkMapping[chainString].TransferProperty[0]
+  /* Function that does all the property storage in blochain
+  */
+  const basifNftAddress = networkMapping[chainString].TransferProperty[0]
+  const transferPropertyAddress = networkMapping[chainString].TransferProperty[1]
 
     const contractAbi = BasicNft
 
-    const { runContractFunction: mintNft } = useWeb3Contract({
+    const { runContractFunction: mintNft, data: dataReturned,
+      error,
+      isLoading,
+      isFetching, } = useWeb3Contract({
       abi: contractAbi,
-      contractAddress: contractAddress, // specify the networkId
+      contractAddress: basifNftAddress, // specify the networkId
       functionName: "mintNft",
       params: {tokenUri: ipfsMetadataHash},
+    })
+
+    const { runContractFunction: approve, data: dataReturnedForApproval,
+      error: approvalError,
+      isLoading: approvalIsLoading,
+      isFetching: approvalIsFetching } = useWeb3Contract({
+      abi: contractAbi,
+      contractAddress: basifNftAddress, // specify the networkId
+      functionName: "approve",
+      params: {to: transferPropertyAddress,
+      tokenId: tokenId},
     })
 
     const uploadToBlockchain =async (e)=>{
@@ -202,15 +227,38 @@ const preventDefault = (e)=> {
 
         // Store property on the blockchain and Emit an event
       const blockhainStoreResult = await mintNft()
-      if(blockhainStoreResult != "undefined"){
+      const mintTxReceipt = await blockhainStoreResult.wait(1);
+      const tokenIdGottenBigNumber = mintTxReceipt.events[0].args.tokenId;
+      const tokenIdGotten = tokenIdGottenBigNumber.toNumber()
+        setTokenId(tokenIdGotten)
+        setIsBlockUploaded(true)
+
+      if(tokenIdGotten){
        alert("Stored succesfully in blockchain")
-        console.log(blockhainStoreResult);
-     } else{
-        alert("Blockchain storing failed")
- 
-      }
+        console.log(tokenIdGotten);
+     } 
+     if(error){
+      alert("Blockchain Storage failed")
+     }
       } else{
         alert("Please first connect a wallet")
+      }
+    }
+
+    const approveProperty =async() =>{
+      if(isWeb3Enabled){
+      const approvedProperty = await approve()
+      if(approvedProperty){
+        alert("Property approved")
+        console.log(approvedProperty);
+      } 
+      if(approvalError){
+        console.log(approvalError);
+        alert("Property not approved")
+      }
+
+      } else{
+        alert("Please connect wallet")
       }
     }
 
@@ -326,8 +374,12 @@ return (
               <input type="submit" disabled={!isUploaded} value={isUploaded ? "Upload details" : "Upload image first"} className="px-16 mb-12 py-2 mt-4 ml-12 text-white rounded-full bg-brightRed hover:bg-brightRedLight focus:outline-none" />
 
             </form>
-            <button onClick={uploadToBlockchain} disabled={!isBlockUploaded}  className="px-16 mb-12 py-2 mt-4 ml-12 text-white rounded-full bg-brightRed hover:bg-brightRedLight focus:outline-none">
-            {isBlockUploaded ? "Finally upload to blockchain" : "Upload Details first"}
+            <button onClick={uploadToBlockchain} disabled={!isMetadataUploaded}  className="px-16 mb-12 py-2 mt-4 ml-12 text-white rounded-full bg-brightRed hover:bg-brightRedLight focus:outline-none">
+            {isMetadataUploaded ? "Upload to blockchain" : "Upload Details first"}
+               </button>
+
+               <button onClick={approveProperty} disabled={!isBlockUploaded}  className="px-16 mb-12 py-2 mt-4 ml-12 text-white rounded-full bg-brightRed hover:bg-brightRedLight focus:outline-none">
+            {isBlockUploaded ? "Approve stored property" : "Upload to blockchain first"}
                </button>
 
         </section>

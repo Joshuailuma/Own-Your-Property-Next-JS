@@ -16,25 +16,58 @@ function index({property}) {
     const [showModal, setShowModal] = useState(false)
     const [buyerAddress, setBuyerAddress] = useState("")
 
+     // New Buyer is the ownerAddress
+     const { runContractFunction: transferItem, data: dataReturned,
+      error,
+      isLoading,
+      isFetching, } = useWeb3Contract({
+      abi: TransferProperty,
+      contractAddress: contractAddress, // specify the networkId
+      functionName: "transferItem",
+      params: {
+        propertyAddress: data.propertyAddress, 
+        tokenId: data.tokenId,
+        ownerAddress: buyerAddress
+      },
+    })
+   
 
     const performTransfer = async ()=>{
       if(isWeb3Enabled){
          // Store property on the blockchain and Emit an event
-      let transferResult = await transferItem()
-      console.log(`Contract address is ${contractAddress}`);
-      console.log(` Owner address is ${data.ownerAddress}`);
-      console.log(`Property address ${data.propertyAddress}`);
-      console.log(`Token id is ${data.tokenId}`);
-      console.log(`Current account is ${account}`);
+       const itemTransferred = await transferItem()
+      // console.log(`Contract address is ${contractAddress}`);
+      // console.log(` Owner address is ${data.ownerAddress}`);
+      // console.log(`Property address ${data.propertyAddress}`);
+      // console.log(`Token id is ${data.tokenId}`);
+      // console.log(`Current account is ${account}`);
+      // ``0xD8CA73D2d43fcE92A3A61913D7C31d5a0cbFe0b2``
 
-      if(transferResult !== 'undefined'){
-        console.log(error, dataReturned);
-        // 0xBcd4042DE499D14e55001CcbB24a551F3b954096
-       alert("Property succesfully transferred")
-     } else{
-        alert("Property transfer failed")
-        console.log(error);
+      console.log(`Property ownwer is ${data.propertyAddress}`); // 0xf74ebb7bb8883e22a8be30f8c2edaf7f4b58f360
+      console.log(`Property ownwer is ${data.tokenId}`); // 11
+      console.log(`Property ownwer is ${buyerAddress}`); // 0xD8CA73D2d43fcE92A3A61913D7C31d5a0cbFe0b2
+
+
+      if(isLoading){
+        console.log("loading");
+      } else{
+        console.log("Not loading");
       }
+      if(isFetching){
+        console.log("Fetching");
+      }else{
+        console.log("No error");
+      }
+
+      if(itemTransferred){
+        console.log(data);
+       alert("Property succesfully transferred")
+     } 
+     
+     if(error){
+      console.log(error);
+      alert("Property transfer failed")
+    }
 
       }else{
         alert("Please connect a wallet")
@@ -47,20 +80,7 @@ function index({property}) {
 
     }
 
-    // New Buyer is the ownerAddress
-    const { runContractFunction: transferItem, data: dataReturned,
-      error,
-      isLoading,
-      isFetching, } = useWeb3Contract({
-      abi: TransferProperty,
-      contractAddress: contractAddress, // specify the networkId
-      functionName: "transferItem",
-      params: {propertyAddress: data.propertyAddress, 
-        tokenId: data.tokenId,
-        ownerAddress: buyerAddress
-      },
-    })
-
+   
   return (
     <>
     <div>
@@ -102,6 +122,9 @@ function index({property}) {
         width="100%"
       />
     </Modal>
+
+    
+    
 
     </div>
     </>
