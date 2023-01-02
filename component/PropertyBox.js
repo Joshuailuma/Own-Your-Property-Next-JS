@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Card } from "@web3uikit/core";
  import Link from "next/link";
 
-export default function PropertyBox({ownerAddress, propertyAddress, tokenId}) {
+export default function PropertyBox({ownerAddress, propertyAddress, tokenId, available}) {
     const [imageUri, setImageURI] = useState("")
     const { isWeb3Enabled, account } = useMoralis()
     const [propertyNameFromJson, setPropertyNameFromJson] = useState("")
@@ -36,7 +36,7 @@ async function updateUI() {
         const imageURI = tokenURIResponse.image
         //Make ipfs address to be viewable as normal address
         const imageURIURL = imageURI.replace("ipfs://", "https://ipfs.io/ipfs/")
-        console.log(`Image uri is ${imageURIURL}`);
+        // console.log(`Image uri is ${imageURIURL}`);
         setImageURI(imageURIURL)
         // We are still getting these details from ipfs json
         setPropertyNameFromJson(tokenURIResponse.name)
@@ -63,7 +63,8 @@ const property = {
     imageUri: imageUri,
     propertyAddress: propertyAddress,
     tokenId: tokenId,
-    ownerAddress: ownerAddress
+    ownerAddress: ownerAddress,
+    available: available
 }
 
 return (

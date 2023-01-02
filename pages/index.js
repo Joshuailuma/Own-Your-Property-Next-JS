@@ -7,6 +7,9 @@ import { useWeb3Contract, useMoralis } from "react-moralis"
 import networkMapping from "../constants/networkMapping.json"
 import BasicNft from "../constants/BasicNft.json"
 
+
+
+
 export default function Home() {
 
   const { isWeb3Enabled, account, chainId } = useMoralis()
