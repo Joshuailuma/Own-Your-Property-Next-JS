@@ -1,9 +1,10 @@
 import networkMapping from "../constants/networkMapping.json"
 // import {GET_PROPERTIES} from "../constants/subgrapQueries"
 import { useWeb3Contract, useMoralis } from 'react-moralis'
-import PropertyBox from "../component/PropertyBox";
+import PropertyBox from "../components/PropertyBox";
 import Link from "next/link";
 import { gql, useQuery } from "@apollo/client";
+import NavBar from '../components/NavBar';
 import { Button } from "@web3uikit/core";
 import { List } from "@web3uikit/icons";
 
@@ -39,6 +40,7 @@ query GetPropertyMinted($account: ID!) {
 }
 `;
 
+
 function myProperties() {
   const {isWeb3Enabled, chainId, account} = useMoralis()
 const chainString = chainId ? parseInt(chainId).toString() : "31337"
@@ -47,34 +49,34 @@ const deadAddress = "0x0000000000000000000000000000000000000000"
 const {loading, error, data: listedProperties} = useQuery(GET_PROPERTIES, {
   variables: {account, deadAddress},
 })
-if(error){
-  console.log(error);
-}
 
+// List of owned properties
 let propertiesOwned = new Array()
-const jiji = ()=>{
-console.log(propertiesOwned);
-}
+
 
 // console.log(listedProperties);
 // console.log(error);
   return (
     <div className="container mx-auto">
+      <NavBar/>
+      <div className={"flex justify-center align-center"}>
       <h1 className="py-4 px-4 font-bold text-2xl justify-center"> Your properties</h1>
-      
+      </div>
+
+      <div className={"flex justify-center align-center"}>
       <Link hidden={!isWeb3Enabled} href="/addProperty" 
               class="p-3 px-6 pt-2 text-white bg-brightRed rounded-full baseline hover:bg-brightRedLight"
               >Add a property</Link>
+      </div>
 
-              <Button onClick={jiji}> uiuiui</Button>
               
      <h1 className="py-4 px-4 font-bold text-2xl"> Properties created</h1>
 
-      <div className="flex flex-wrap mt-14 gap-4">
+      <div className="flex flex-wrap gap-4">
 
       {isWeb3Enabled ? ( 
                     loading || !listedProperties ? (
-                        <div className={"pt-48"}>Loading...</div>
+                        <div className={"pt-48"}>No Property here...</div>
                     ) : (
                       listedProperties.propertyMinteds.map((property) => {
                 
@@ -89,9 +91,8 @@ console.log(propertiesOwned);
                         })
 
                             return(
-                              <> 
-                                                      
-                            <PropertyBox className={"mt-28"}
+                              <>                                                       
+                            <PropertyBox className={""}
                             ownerAddress={ownerAddress} 
                             propertyAddress={propertyAddress}
                             tokenId={tokenId}
@@ -111,12 +112,12 @@ console.log(propertiesOwned);
                 </div>
 
                 {/* Properties bought */}
-          <h1 className="py-4 px-4 font-bold text-2xl"> Properties bought</h1>
-          <div className="flex flex-wrap mt-14 gap-4">
+          <h1 className="py-4 px-4 font-bold text-2xl mt-14"> Properties bought</h1>
+          <div className="flex flex-wrap gap-4">
 
           {isWeb3Enabled ? (
                     loading || !listedProperties ? (
-                        <div className={"pt-48"}>Loading...</div>
+                        <div className={"pt-48"}>No Property here...</div>
                     ) : (
 
                       listedProperties.itemSolds.map((property) => {
@@ -127,13 +128,8 @@ console.log(propertiesOwned);
                          if(ownerAddress){                   
                           propertiesOwned.forEach((element)=>{
                                //Check if object in array and this object is same
-                               if(JSON.stringify(element) === JSON.stringify({
-                                "ownerAddress": ownerAddress,
-                                "propertyAddress": propertyAddress,
-                                "tokenId": tokenId,
-                                "blockNumber": blockNumber
-                              })){
-                                console.log("Same property found");
+                               if((element.tokenId) == tokenId){
+                                console.log("Same property found bought");
                                 //If this blockNumber is higher than the one we created
                                 if(blockNumber > element.blockNumber){
                                   //Remove the element in the last position in the array, 1 element, and add this obj
@@ -145,6 +141,8 @@ console.log(propertiesOwned);
                                   })
                                 }
                               } else{
+                                console.log("Not Same property found bought");
+
                                 //If the object is not in the array at all, add it
                                 propertiesOwned.push({
                                   "ownerAddress": ownerAddress,
@@ -154,13 +152,11 @@ console.log(propertiesOwned);
                                 })
                               }                   
                           })
-                        }
-  
-                        
+                        }                      
 
                             return(
                               <>                                                   
-                            <PropertyBox className={"mt-28"}
+                            <PropertyBox
                             ownerAddress={ownerAddress} 
                             propertyAddress={propertyAddress}
                             tokenId={tokenId}
@@ -172,8 +168,6 @@ console.log(propertiesOwned);
                             )
                         })
                         )
-
-
                 ) : (
                     <div className={"pt-52"}>Web3 Currently Not Enabled</div>
                 )
@@ -182,54 +176,43 @@ console.log(propertiesOwned);
       </div>
       
       {/* Properties sold */}
-       <h1 className="py-4 px-4 font-bold text-2xl"> Properties sold</h1>
-          <div className="flex flex-wrap mt-14 gap-4">
+       <h1 className="py-4 px-4 font-bold text-2xl mt-14"> Properties sold</h1>
+          <div className="flex flex-wrap gap-4">
 
           {isWeb3Enabled ? (
                     loading || !listedProperties ? (
-                        <div className={"pt-48"}>Loading...</div>
+                        <div className={"pt-48"}>No Property here...</div>
                     ) : (
                       listedProperties.transfers.map((property) => {
                         // Current property address will always be constant. Its actually not in the result gotten below
                         const propertyAddress = "0xF74EBb7bB8883E22a8Be30F8C2EDaF7f4B58f360"
-
-                        const { owner: ownerAddress, tokenId, blockNumber } = property
+                        
+                        const { to: ownerAddress, tokenId, blockNumber } = property
+                        console.log(ownerAddress);
+                        console.log(tokenId);
                         // Adding propertied bought to propertiesOwned array 
-                        if(ownerAddress){                   
-                        propertiesOwned.forEach((element)=>{
+                        if(ownerAddress){
+                          //Looping through the array
+                          for(let i=0; i < propertiesOwned.length; i++){
+                            let element = propertiesOwned[i]
                              //Check if object in array and this object is same
-                             if(JSON.stringify(element) === JSON.stringify({
-                              "ownerAddress": ownerAddress,
-                              "propertyAddress": propertyAddress,
-                              "tokenId": tokenId,
-                              "blockNumber": blockNumber
-                            })){
-                              console.log("Same property found");
+                             if((element.tokenId) == tokenId){
+                              // console.log("Same property found SOld");
                               //If this blockNumber is higher than the one we created
                               if(blockNumber > element.blockNumber){
-                                //Remove the element in the last position in the array, 1 element, and add this obj
-                                propertiesOwned.splice(-1, 1, {
-                                  "ownerAddress": ownerAddress,
-                                  "propertyAddress": propertyAddress,
-                                  "tokenId": tokenId,
-                                  "blockNumber": blockNumber
-                                })
+                                //It means the current state of the item is that its recently sold
+                                //Remove the element from the array of my properties since it has been sold
+                                propertiesOwned.splice(i, 1)
                               }
-                            } else{
-                              //If the object is not in the array at all, add it
-                              propertiesOwned.push({
-                                "ownerAddress": ownerAddress,
-                                "propertyAddress": propertyAddress,
-                                "tokenId": tokenId,
-                                "blockNumber": blockNumber
-                              })
-                            }                   
-                        })
+                            } 
+                            //We dont wwant sold items in there, so we aint adding anything                   
+                        }
+                          
                       }
 
                             return(
                               <>                                                   
-                            <PropertyBox className={"mt-28"}
+                            <PropertyBox
                             owner={ownerAddress} 
                             propertyAddress={propertyAddress}
                             tokenId={tokenId} 
@@ -252,31 +235,29 @@ console.log(propertiesOwned);
 
 
       {/* Properties currently owned */}
-      <h1 className="py-4 px-4 font-bold text-2xl"> Properties currently owned</h1>
-          <div className="flex flex-wrap mt-14 gap-4">
+      <h1 className="py-4 px-4 font-bold text-2xl mt-14"> Properties currently owned</h1>
+          <div className="flex flex-wrap gap-4">
 
           {isWeb3Enabled ? (
                     loading || !listedProperties ? (
-                        <div className={"pt-48"}>Loading...</div>
+                        <div className={"pt-48"}>No Property here...</div>
                     ) : (
                       
 
                       propertiesOwned.map((property) => {
-                        // console.log(property);
 
                         const { ownerAddress, propertyAddress, tokenId } = property
 
                             return(
                               <>                                                   
-                            <PropertyBox className={"mt-28"}
+                            <PropertyBox
                             ownerAddress={ownerAddress} 
                             propertyAddress={propertyAddress}
                             tokenId={tokenId}
                             available={false}
                             key={tokenId}
                             />
-                            </>
-                    
+                            </>                    
                             )
                         })
                         )

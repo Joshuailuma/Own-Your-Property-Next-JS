@@ -6,6 +6,8 @@ import networkMapping from "../../../constants/networkMapping.json"
 import TransferProperty from "../../../constants/TransferProperty.json"
 import { useEffect, useState } from "react";
 import BasicNft from "../../../constants/BasicNft.json"
+import { useNotification } from "@web3uikit/core";
+import { Bell } from '@web3uikit/icons';
 
 function index({property}) {
     const router = useRouter()
@@ -20,6 +22,7 @@ function index({property}) {
     const [showModal, setShowModal] = useState(false)
     const [buyerAddress, setBuyerAddress] = useState("")
     const [propertyState, setPropertyState] = useState("")
+    const dispatch = useNotification()
 
   useEffect(()=>{
     setPropertyState(data.available)
@@ -79,9 +82,13 @@ function index({property}) {
     })
 
     const performTransfer = async ()=>{
+      showModal(false)
       if(isWeb3Enabled){
          // Store property on the blockchain and Emit an event
-       const itemTransferred = await transferItem()
+       const itemTransferred = await transferItem({
+        onSuccess: handleTransferSuccess,
+        onError: (error)=>{handleTransferError(error)}
+       })
       // console.log(`Contract address is ${contractAddress}`);
       // console.log(` Owner address is ${data.ownerAddress}`);
       // console.log(`Property address ${data.propertyAddress}`);
@@ -93,56 +100,104 @@ function index({property}) {
       // console.log(`Property iD is ${data.tokenId}`); // 11
       // console.log(`Property new buyer address is ${buyerAddress}`); // 0xD8CA73D2d43fcE92A3A61913D7C31d5a0cbFe0b2
 
-
-      if(isLoading){
-        console.log("loading");
-      } else{
-        console.log("Not loading");
-      }
-      if(isFetching){
-        console.log("Fetching");
       }else{
-        console.log("No error");
-      }
-
-      if(itemTransferred){
-        console.log(dataCheckOwner);
-        console.log(data);
-       alert("Property succesfully transferred")
-     } 
-     
-     if(error){
-      console.log(error);
-      alert("Property transfer failed")
-    }
-
-      }else{
-        alert("Please connect a wallet")
+        connectWalletNotification()
       }
 
     }
 
     const handleGetApproval = async ()=>{
-      const gottenApproval = await approve()
-      if(gottenApproval){
-        console.log(itemTransferred);
-        alert("Approval gotten")
-      }
-    }
-    if(approvalError){
-      console.log(approvalError);
+      const gottenApproval = await approve({
+        onSuccess: handleApproveSuccess,
+        onError: (error)=>{handleApproveError(error)}
+      })     
     }
 
     const handleTransferClick = async ()=>{
       setShowModal(true)
     }
-    
+   
+    /**
+     * For notifications
+     */
+
+    const handleApproveSuccess = async(tx)=>{
+      try{
+        tx.wait(1)
+        handleApproveNotification(tx)
+      } catch(e){
+        console.log(e, "Nonono");
+      }
+      
+    }
+
+    const handleApproveNotification =()=>{
+      dispatch({
+        type: "success",
+        message: "Approval gotten, you can now transfer🙂",
+        title: "Transaction Notification",
+        position: "topR",
+        icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+      })
+    }
+
+    const handleApproveError =(e)=>{
+      dispatch({
+        type: "error",
+        message: `Error getting approval failed ${e.message}`,
+        title: "Transaction Notification",
+        position: "topR",
+        icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+      })
+    }
+
+    const handleTransferSuccess = async(tx)=>{
+      try{
+        tx.wait(1)
+        handleTransferNotification(tx)
+      } catch(e){
+        console.log(e);
+      }
+      
+    }
+
+    const handleTransferNotification =()=>{
+      dispatch({
+        type: "success",
+        message: "Property succesfully transferred",
+        title: "Transaction Notification",
+        position: "topR",
+        icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+      })
+    }
+
+    const handleTransferError =(e)=>{
+      dispatch({
+        type: "error",
+        message: `Error trasferring property ${e.message}`,
+        title: "Transaction Notification",
+        position: "topR",
+        icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+      })
+    }
+
+    const connectWalletNotification =(e)=>{
+      dispatch({
+        type: "info",
+        message: `Please connect your wallet`,
+        title: "Transaction Notification",
+        position: "topR",
+        icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+      })
+    }
    
   return (
     <>
-    <div>
+    <div className={"flex justify-center align-center"}>
 
-    <Card onClick={handleTransferClick}
+    <div className={"max-w-md justify-center"}>
+
+    <Card className={"max-w-md justify-center"} onClick={handleTransferClick}
         title={data.name}
          description={data.description}>
             <div>#SN {data.SN}</div>
@@ -150,7 +205,7 @@ function index({property}) {
             src={data.imageUri} height="200" width="200"/> 
      </Card>
 
-     <button onClick={handleGetApproval} className="px-16 mb-12 py-2 mt-4 ml-12 text-white rounded-full bg-brightRed hover:bg-brightRedLight focus:outline-none ">
+     <button onClick={handleGetApproval} className={approvalIsLoading || approvalIsFetching ? "animate-spin spinner-border h-8 w-8 border-b-2 rounded-full" :"px-16 mb-12 py-2 mt-4 ml-12 text-white rounded-full bg-brightRed hover:bg-brightRedLight focus:outline-none "}>
        First Get approval
        </button>
      <button onClick={handleTransferClick} className="px-16 mb-12 py-2 mt-4 ml-12 text-white rounded-full bg-brightRed hover:bg-brightRedLight focus:outline-none ">
@@ -186,6 +241,7 @@ function index({property}) {
     
     
 
+    </div>
     </div>
     </>
   )

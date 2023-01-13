@@ -1,14 +1,9 @@
-import Head from 'next/head'
+import NavBar from '../components/NavBar';
 import Image from 'next/image'
-import Footer from '../component/Footer'
-import styles from '../styles/Home.module.css'
 import { ethers } from 'ethers'
 import { useWeb3Contract, useMoralis } from "react-moralis"
 import networkMapping from "../constants/networkMapping.json"
 import BasicNft from "../constants/BasicNft.json"
-
-
-
 
 export default function Home() {
 
@@ -62,21 +57,16 @@ export default function Home() {
     // const tokenId = txnReceipt.events[0].args.tokenId
 
     // console.log(txnReceipt);
-
-    
-
-  
     }
 
   return (
-    <div id='body'>
-      {/* Nav bar will display on all screens */}
-     
+    <div>
+      <NavBar />
       
       {/* Hero section */}
       <section id='hero'>
         {/* Flex row makes it responsive */}
-        <container className="flex flex-col-reverse md:flex-row items-center px-6 mx-auto mt-10 space-y-0 md:space-y-0">
+        <container className="flex flex-col md:flex-row items-center px-6 mx-auto mt-10 space-y-0 md:space-y-0">
           {/* Left item */}
           <div className='flex flex-col mb-32 space-y-12 md:w-1/2'>
             <h1 className="max-w-md text-4xl font-bold text-center md:text-5xl md:text-left">
@@ -143,10 +133,8 @@ export default function Home() {
               tracking progress at the milestone level all the way down to the
                 smallest of details. Never lose sight of the bigger picture
                 again.</p>
+          </div>            
           </div>
-            
-          </div>
-
 
                {/* List item 2 */}
 
@@ -256,11 +244,10 @@ export default function Home() {
           This is the solution to buying stolen or illegal properties unknowningly.
           </p>
           </div>
-        </div>
-
-        
+        </div>        
         </div>
       </section>
+
 
       {/* Call to action */}
       <section id="cta" className='bg-brightRed'>
@@ -270,11 +257,9 @@ export default function Home() {
             Try us today. It's fully decentralized.
           </h2>
         </div>
-
       </section>
 
-      {/* Footer */}
-      <Footer/>
+
     </div>
-  )
+  );
 }

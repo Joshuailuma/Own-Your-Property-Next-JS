@@ -1,11 +1,14 @@
 import React, { useState, useEffect, ChangeEvent, MouseEvent, useRef} from 'react'
-import Footer from '../component/Footer'
+import Footer from '../components/Footer'
 import Image from 'next/image'
 import axios from "axios";
-import SimpleProgressBar from '../component/SimpleProgressBar'
+import SimpleProgressBar from '../components/SimpleProgressBar'
 import { useWeb3Contract, useMoralis } from "react-moralis"
 import networkMapping from "../constants/networkMapping.json"
 import BasicNft from "../constants/BasicNft.json"
+import { useNotification } from '@web3uikit/core';
+import { Bell } from '@web3uikit/icons';
+import NavBar from '../components/NavBar';
 
 function products() {
 
@@ -16,6 +19,9 @@ function products() {
   const [remaining, setRemaining] = useState(0);
 
 const [isUploaded, setIsUploaded] = useState(false) //Change state based on the new
+const [isUploading, setIsUploading] = useState(false) //Change state based on the new
+const dispatch = useNotification()
+
 const [isMetadataUploaded, setIsMetadataUploaded] = useState(false) //Change state based on the new
 const [isBlockUploaded, setIsBlockUploaded] = useState(false) //Change state based on the new
 
@@ -57,13 +63,13 @@ const preventDefault = (e)=> {
       const fileInput = e.target; //File we chose
 
     if (!fileInput.files) {
-      alert("No file was chosen");
+      handleNoChosenFile()
       return;
     }
 
     //If no file is chosen
     if (!fileInput.files || fileInput.files.length === 0) {
-      alert("Files list is empty");
+      handleEmptyFile()
       return;
     }
 
@@ -71,7 +77,7 @@ const preventDefault = (e)=> {
 
     /** File validation/or not and image */
     if (!file.type.startsWith("image")) {
-      alert("Please select a valide image");
+      handleInvalidImage()
       return;
     }
 
@@ -85,7 +91,7 @@ const preventDefault = (e)=> {
     e.currentTarget.type = "file";
 
     }else{
-      alert("Please first connect a wallet")
+      connectWalletNotification()
     }
     
   } //Done with choose image
@@ -114,6 +120,8 @@ const preventDefault = (e)=> {
     }
     if(isWeb3Enabled){
       try {
+        setIsUploading(true)
+
         let startAt = Date.now(); // To keep track of the upload start time
         let formData = new FormData();
         formData.append("media", file);
@@ -140,9 +148,11 @@ const preventDefault = (e)=> {
         // CHange submit button text, if the upload was successful and have gotten an ipfs hash
         if(ipfsHashImage != "undefined"){
           setIsUploaded(true)
+          setIsUploading(false) //Done uploading
           setIpfsImageHash(`ipfs://${ipfsHashImage}`)
           console.log(data);
         }
+        setIsUploading(false) //Done uploading
              
     //Gotten the ipfs hash
         console.log("File was uploaded successfully:", data.data.response.IpfsHash);
@@ -153,11 +163,11 @@ const preventDefault = (e)=> {
           e.response && e.response.data
             ? e.response.data.error
             : "Sorry! something went wrong.";
-        alert(error);
+        handleSomethingWentWrong(error)
       }
 
     } else{
-      alert("Please connect an account")
+      connectWalletNotification()
     }
   }; // DOne with upload Image file
 
@@ -186,10 +196,10 @@ const preventDefault = (e)=> {
           //Error in uploading details
           console.error(e);
          const error = "Sorry! something went wrong.";
-          alert(error);
+         handleSomethingWentWrong(error)
         }
     } else{
-      alert("Please connect a wallet")
+      connectWalletNotification()
     }    
   }
 
@@ -227,44 +237,147 @@ const preventDefault = (e)=> {
 
         // Store property on the blockchain and Emit an event
       const blockhainStoreResult = await mintNft()
-      const mintTxReceipt = await blockhainStoreResult.wait(1);
+      const mintTxReceipt = await blockhainStoreResult.wait();
       const tokenIdGottenBigNumber = mintTxReceipt.events[0].args.tokenId;
       const tokenIdGotten = tokenIdGottenBigNumber.toNumber()
         setTokenId(tokenIdGotten)
         setIsBlockUploaded(true)
 
       if(tokenIdGotten){
-       alert("Stored succesfully in blockchain")
-        console.log(tokenIdGotten);
+        handleSuccessNotification()
      } 
      if(error){
-      alert("Blockchain Storage failed")
+      handleErrorUploadNotification(error)
      }
       } else{
-        alert("Please first connect a wallet")
+        connectWalletNotification()
       }
     }
 
     const approveProperty =async() =>{
       if(isWeb3Enabled){
-      const approvedProperty = await approve()
-      if(approvedProperty){
-        alert("Property approved")
-        console.log(approvedProperty);
-      } 
-      if(approvalError){
-        console.log(approvalError);
-        alert("Property not approved")
-      }
+      const approvedProperty = await approve({
+        onSuccess: handleApproveSuccess,
+        onError: (error)=>{handleApproveError(error)}
+      })
 
       } else{
-        alert("Please connect wallet")
+        connectWalletNotification()
       }
     }
+
+    /**
+     * For notifications
+     */
+
+    
+    
+    const handleSuccessNotification =()=>{
+      dispatch({
+        type: "success",
+        message: "Stored succesfully in blockchain",
+        title: "Transaction Notification",
+        position: "topR",
+        icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+      })
+    }
+
+    const handleErrorUploadNotification =(e)=>{
+      dispatch({
+        type: "error",
+        message: `Faled to store ${e.message}`,
+        title: "Transaction Notification",
+        position: "topR",
+        icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+      })
+    }
+
+    const connectWalletNotification =(e)=>{
+      dispatch({
+        type: "info",
+        message: `Please connect your wallet`,
+        title: "Transaction Notification",
+        position: "topR",
+        icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+      })
+    }
+
+    const handleApproveSuccess = async(tx)=>{
+      try{
+        tx.wait(1)
+        handleApproveNotification(tx)
+      } catch(e){
+        console.log(e);
+      }
+      
+    }
+    
+    const handleApproveNotification =()=>{
+      dispatch({
+        type: "success",
+        message: "Approval gotten",
+        title: "Transaction Notification",
+        position: "topR",
+        icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+      })
+    }
+
+    const handleApproveError =(e)=>{
+      dispatch({
+        type: "error",
+        message: `Error getting approval ${e.message}`,
+        title: "Transaction Notification",
+        position: "topR",
+        icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+      })
+    }
+
+    const handleNoChosenFile =(e)=>{
+      dispatch({
+        type: "error",
+        message: `No file was chosen ${e.message}`,
+        title: "Notification",
+        position: "topR",
+        icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+      })
+    }
+
+    const handleEmptyFile =()=>{
+      dispatch({
+        type: "error",
+        message: `File list is empty`,
+        title: "Notification",
+        position: "topR",
+        icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+      })
+    }
+
+    const handleInvalidImage =()=>{
+      dispatch({
+        type: "error",
+        message: `Please select a valid image`,
+        title: "Notification",
+        position: "topR",
+        icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+      })
+    }
+
+    const handleSomethingWentWrong =(e)=>{
+      dispatch({
+        type: "error",
+        message: e,
+        title: "Notification",
+        position: "topR",
+        icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+      })
+    }
+
 
 
 return (
     <div>
+            <NavBar/>
+
        <section className="flex flex-col mt-12 mx-20">
         <h1 className="text-4xl font-bold md:text-5xl"> Create property</h1>
         <p className="text-2xl mt-6 text-darkGrayishBlue">
@@ -356,14 +469,14 @@ return (
                   onClick={onCancelFile}
                   className="w-1/2 px-4 py-3 text-sm font-medium text-white transition-colors duration-300 bg-gray-700 rounded-sm md:w-auto md:text-base disabled:bg-gray-400 hover:bg-gray-600"
                 >
-                  Cancel file
+                  Cancel image
                 </button>
                 <button
                   disabled={!previewUrl}
                   onClick={onUploadImage}
                   className="w-1/2 px-4 py-3 text-sm font-medium text-white transition-colors duration-300 bg-gray-700 rounded-sm md:w-auto md:text-base disabled:bg-gray-400 hover:bg-gray-600"
                 >
-                  Upload file
+                  Upload image
                 </button>
               </div>
             </div>
@@ -371,17 +484,19 @@ return (
 
 
         {/* <FileUpload className={'justify-center  mt-6'} name="demo" url="./api/upload" maxFileSize="3000000" onError={uploadSuccess} accept="image/*" onUpload={uploadFailed}></FileUpload> */}
-              <input type="submit" disabled={!isUploaded} value={isUploaded ? "Upload details" : "Upload image first"} className="px-16 mb-12 py-2 mt-4 ml-12 text-white rounded-full bg-brightRed hover:bg-brightRedLight focus:outline-none" />
+              <input type="submit" disabled={!isUploaded} value={isUploaded ? "Upload details" : "Upload image first"} className={isUploading ? "animate-spin spinner-border h-8 w-8 border-b-2 rounded-full" :"px-16 mb-12 py-2 mt-4 ml-12 text-white rounded-full bg-brightRed hover:bg-brightRedLight focus:outline-none"} />
 
             </form>
-            <button onClick={uploadToBlockchain} disabled={!isMetadataUploaded}  className="px-16 mb-12 py-2 mt-4 ml-12 text-white rounded-full bg-brightRed hover:bg-brightRedLight focus:outline-none">
+            <div className={"max-w-lg"} >
+            <button onClick={uploadToBlockchain} disabled={!isMetadataUploaded}  className={isLoading || isFetching ? "animate-spin spinner-border h-8 w-8 border-b-2 rounded-full" :"px-16 mb-12 py-2 mt-4 ml-12 text-white rounded-full bg-brightRed hover:bg-brightRedLight focus:outline-none"}>
             {isMetadataUploaded ? "Upload to blockchain" : "Upload Details first"}
                </button>
-
-               <button onClick={approveProperty} disabled={!isBlockUploaded}  className="px-16 mb-12 py-2 mt-4 ml-12 text-white rounded-full bg-brightRed hover:bg-brightRedLight focus:outline-none">
+               {/* } /> */}
+               <button onClick={approveProperty} disabled={!isBlockUploaded}  className={approvalIsLoading || approvalIsFetching ? "animate-spin spinner-border h-8 w-8 border-b-2 rounded-full" : "px-12 mb-12 py-2 mt-4 ml-12 text-white rounded-full bg-brightRed hover:bg-brightRedLight focus:outline-none"}>
             {isBlockUploaded ? "Approve stored property" : "Upload to blockchain first"}
                </button>
-
+            </div>
+            
         </section>
 
 

@@ -1,12 +1,13 @@
 import React from 'react'
-import Head from 'next/head'
 import Image from 'next/image'
-import Footer from '../component/Footer'
-                           //icons
- 
- const about = () => {
+import { Accordion } from '@web3uikit/core'    //icons
+import Footer from '../components/Footer'
+import NavBar from '../components/NavBar';
+
+const about = () => {
   return (
     <div>
+      <NavBar/>
       <section id='hero'>
         {/* Flex row makes it responsive */}
         <container className="flex flex-col-reverse md:flex-row items-center px-6 mx-auto mt-10 space-y-0 md:space-y-0">
@@ -36,8 +37,28 @@ import Footer from '../component/Footer'
           </div>
         </container>
 
-      </section>
+        <Accordion
+    id="accordion"
+      isExpanded
+    title="How to store a Property"
+     className="md:w-1/2"
+>
+  <ol className={"mx-9 list-decimal subpixel-antialiased font-semibold"}>
+  <li> Connect your Wallet</li>
+  <li> Navigate to My-Properties page</li>
+  <li> Click Add New</li>
+  <li> Fill in the property details</li>
+  <li> Upload an Image</li>
+  <li> Upload details</li>
+  <li> Upload to blockchain</li>
+  <li> Finally get property approval</li>
+  </ol>
 
+
+
+</Accordion>
+
+      </section>
 
       <Footer/>
     </div>
