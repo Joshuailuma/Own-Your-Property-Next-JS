@@ -237,10 +237,7 @@ function Index({property}) {
         width="100%"
       />
     </Modal>
-
     
-    
-
     </div>
     </div>
     </>

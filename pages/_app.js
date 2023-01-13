@@ -8,7 +8,7 @@ import NavBar from '../components/NavBar';
 import React from 'react';
 
 
-const client = new ApolloClient({
+const Client = new ApolloClient({
   cache: new InMemoryCache(),
   uri: "https://api.studio.thegraph.com/query/39622/own_your_property/v0.0.22",
 })
@@ -37,7 +37,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps }, }) {
     <>
      {loading ? (
        <MoralisProvider initializeOnMount={false}>
-        <ApolloProvider client={client}>
+        <ApolloProvider client={Client}>
        <NotificationProvider>
        <div className={"flex my-56 justify-center align-center"}>
         <NavBar/>
@@ -60,7 +60,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps }, }) {
         
       ) : (
         <MoralisProvider initializeOnMount={false}>
-        <ApolloProvider client={client}>
+        <ApolloProvider client={Client}>
         <NotificationProvider>
     <Component {...pageProps} />
         </NotificationProvider>

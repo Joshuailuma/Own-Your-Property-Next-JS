@@ -5,8 +5,6 @@ import PropertyBox from "../components/PropertyBox";
 import Link from "next/link";
 import { gql, useQuery } from "@apollo/client";
 import NavBar from '../components/NavBar';
-import { Button } from "@web3uikit/core";
-import { List } from "@web3uikit/icons";
 
 //Query the database according the connected web3 account
 // We are passing in a query paramenter below this function GET_PROPERTIES, {
@@ -40,7 +38,6 @@ query GetPropertyMinted($account: ID!) {
 }
 `;
 
-
 function MyProperties() {
   const {isWeb3Enabled, chainId, account} = useMoralis()
 const chainString = chainId ? parseInt(chainId).toString() : "31337"
@@ -53,7 +50,6 @@ const {loading, error, data: listedProperties} = useQuery(GET_PROPERTIES, {
 // List of owned properties
 let propertiesOwned = new Array()
 
-
 // console.log(listedProperties);
 // console.log(error);
   return (
@@ -65,7 +61,7 @@ let propertiesOwned = new Array()
 
       <div className={"flex justify-center align-center"}>
       <Link hidden={!isWeb3Enabled} href="/addProperty" 
-              class="p-3 px-6 pt-2 text-white bg-brightRed rounded-full baseline hover:bg-brightRedLight"
+              className="p-3 px-6 pt-2 text-white bg-brightRed rounded-full baseline hover:bg-brightRedLight"
               >Add a property</Link>
       </div>
 
@@ -108,7 +104,6 @@ let propertiesOwned = new Array()
                     <div className={"pt-52"}>Web3 Currently Not Enabled</div>
                 )
                 }
-
                 </div>
 
                 {/* Properties bought */}
@@ -119,7 +114,6 @@ let propertiesOwned = new Array()
                     loading || !listedProperties ? (
                         <div className={"pt-48"}>No Property here...</div>
                     ) : (
-
                       listedProperties.itemSolds.map((property) => {
 
                         const { ownerAddress, propertyAddress, tokenId, blockNumber} = property
@@ -188,7 +182,7 @@ let propertiesOwned = new Array()
                         const propertyAddress = "0xF74EBb7bB8883E22a8Be30F8C2EDaF7f4B58f360"
                         
                         const { to: ownerAddress, tokenId, blockNumber } = property
-                        console.log(ownerAddress);
+                        // console.log(ownerAddress);
                         console.log(tokenId);
                         // Adding propertied bought to propertiesOwned array 
                         if(ownerAddress){

@@ -218,7 +218,6 @@ export default function Home() {
           </p>
           </div>
 
-
         {/* Testimonial 1. For medium screen we will take 1-third of each testimonial */}
         <div className="flex flex-col items-center p-6 space-y-6 rounded-lg bg-veryLightGray md:w-1/3">
           {/* Image div */}
@@ -247,7 +246,6 @@ export default function Home() {
         </div>        
         </div>
       </section>
-
 
       {/* Call to action */}
       <section id="cta" className='bg-brightRed'>

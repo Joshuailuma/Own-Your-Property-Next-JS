@@ -28,7 +28,7 @@ async function updateUI() {
         // IPFS Gateway: A server that will return IPFS files from a "normal" URL.
         const requestURL = tokenURI.replace("ipfs://", "https://ipfs.io/ipfs/")
         //I stopped here
-                // console.log(`Found token uri ${requestURL}`);
+        // console.log(`Found token uri ${requestURL}`);
 
         const tokenURIResponse = await (await fetch(requestURL)).json()
 
@@ -36,7 +36,7 @@ async function updateUI() {
         const imageURI = tokenURIResponse.image
         //Make ipfs address to be viewable as normal address
         const imageURIURL = imageURI.replace("ipfs://", "https://ipfs.io/ipfs/")
-        // console.log(`Image uri is ${imageURIURL}`);
+        console.log(`Image uri is ${imageURIURL}`);
         setImageURI(imageURIURL)
         // We are still getting these details from ipfs json
         setPropertyNameFromJson(tokenURIResponse.name)
@@ -52,6 +52,7 @@ async function updateUI() {
 useEffect(() => {
     if (isWeb3Enabled) {
         updateUI()
+        console.log("Hello");
     }
 }, [isWeb3Enabled])
 
