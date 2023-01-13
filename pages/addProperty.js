@@ -142,8 +142,8 @@ const preventDefault = (e)=> {
   }       
         
   const {data} = await axios.post("/api/uploadImage", formData, options);
-           
-        alert("Photo was uploaded successfully", data)
+        
+        photoUploadedSuccesfully() //Show Notification
         let ipfsHashImage = data.data.response.IpfsHash
         // CHange submit button text, if the upload was successful and have gotten an ipfs hash
         if(ipfsHashImage != "undefined"){
@@ -186,7 +186,7 @@ const preventDefault = (e)=> {
        ipfsMetadataHashRef.current = `ipfs://${metadataHash}`
          setIpfsMetadataHash(ipfsMetadataHashRef.current)
           
-         alert("Details uploaded")
+         detailsUploaded() //Notification
         console.log(`ipfsMetadataHash is ${ipfsMetadataHash}`);
         setIsMetadataUploaded(true)
     
@@ -268,10 +268,7 @@ const preventDefault = (e)=> {
 
     /**
      * For notifications
-     */
-
-    
-    
+     */    
     const handleSuccessNotification =()=>{
       dispatch({
         type: "success",
@@ -372,12 +369,30 @@ const preventDefault = (e)=> {
       })
     }
 
+    const photoUploadedSuccesfully =()=>{
+      dispatch({
+        type: "success",
+        message: "Photo uploaded successfuly",
+        title: "Notification",
+        position: "topR",
+        icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+      })
+    }
+
+    const detailsUploaded =()=>{
+      dispatch({
+        type: "success",
+        message: "Details uploaded",
+        title: "Notification",
+        position: "topR",
+        icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+      })
+    }
 
 
 return (
     <div>
-            <NavBar/>
-
+     <NavBar/>
        <section className="flex flex-col mt-12 mx-20">
         <h1 className="text-4xl font-bold md:text-5xl"> Create property</h1>
         <p className="text-2xl mt-6 text-darkGrayishBlue">
@@ -491,7 +506,9 @@ return (
             <button onClick={uploadToBlockchain} disabled={!isMetadataUploaded}  className={isLoading || isFetching ? "animate-spin spinner-border h-8 w-8 border-b-2 rounded-full" :"px-16 mb-12 py-2 mt-4 ml-12 text-white rounded-full bg-brightRed hover:bg-brightRedLight focus:outline-none"}>
             {isMetadataUploaded ? "Upload to blockchain" : "Upload Details first"}
                </button>
-               {/* } /> */}
+
+               <div className={isMetadataUploaded && !isBlockUploaded ? "font-bold" : "hidden"}>Please wait...</div>
+
                <button onClick={approveProperty} disabled={!isBlockUploaded}  className={approvalIsLoading || approvalIsFetching ? "animate-spin spinner-border h-8 w-8 border-b-2 rounded-full" : "px-12 mb-12 py-2 mt-4 ml-12 text-white rounded-full bg-brightRed hover:bg-brightRedLight focus:outline-none"}>
             {isBlockUploaded ? "Approve stored property" : "Upload to blockchain first"}
                </button>
