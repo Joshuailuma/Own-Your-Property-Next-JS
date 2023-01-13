@@ -5,7 +5,7 @@ const fs = require("fs")
 
 // This is the resolver of the upload request
 
-export default async function handler(req, res){
+export default async function Handler(req, res){
 
     let finalResult
         // How to access the req.body properly becaus of how i brought it in

@@ -16,7 +16,7 @@ export const config = {
 
 // This is the resolver of the upload request
 
-export default async function handler(req, res){
+export default async function Handler(req, res){
     const form = formidable()
     let finalResult
     form.parse(req, async(err, fields, file)=>{

@@ -41,7 +41,7 @@ query GetPropertyMinted($account: ID!) {
 `;
 
 
-function myProperties() {
+function MyProperties() {
   const {isWeb3Enabled, chainId, account} = useMoralis()
 const chainString = chainId ? parseInt(chainId).toString() : "31337"
 const marketplaceAddress = networkMapping[chainString].TransferProperty[0]
@@ -274,4 +274,4 @@ let propertiesOwned = new Array()
   )
 }
 
-export default myProperties
+export default MyProperties

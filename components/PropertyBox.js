@@ -80,7 +80,7 @@ return (
          description={propertyDescriptionFromJson}>
             <div>#SN {propertySNFromJson}</div>
              <Image loader={() => imageUri}
-            src={imageUri} height="200" width="200"/> 
+            src={imageUri} alt="image" height="200" width="200"/> 
      </Card> 
      </Link>) : (<div>Loading </div>
          

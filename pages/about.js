@@ -4,7 +4,7 @@ import { Accordion } from '@web3uikit/core'    //icons
 import Footer from '../components/Footer'
 import NavBar from '../components/NavBar';
 
-const about = () => {
+const About = () => {
   return (
     <div>
       <NavBar/>
@@ -65,4 +65,4 @@ const about = () => {
   )
 }
 
-export default about
+export default About

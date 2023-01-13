@@ -9,7 +9,7 @@ import BasicNft from "../../../constants/BasicNft.json"
 import { useNotification } from "@web3uikit/core";
 import { Bell } from '@web3uikit/icons';
 
-function index({property}) {
+function Index({property}) {
     const router = useRouter()
     const data = router.query //Data gotten from the previoud page
  
@@ -26,7 +26,7 @@ function index({property}) {
 
   useEffect(()=>{
     setPropertyState(data.available)
-  })
+  },[data.available])
      // New Buyer is the ownerAddress
      const { runContractFunction: transferItem, data: dataReturned,
       error,
@@ -202,7 +202,7 @@ function index({property}) {
          description={data.description}>
             <div>#SN {data.SN}</div>
              <Image loader={() => data.imageUri}
-            src={data.imageUri} height="200" width="200"/> 
+            src={data.imageUri} alt="image" height="200" width="200"/> 
      </Card>
 
      <button onClick={handleGetApproval} className={approvalIsLoading || approvalIsFetching ? "animate-spin spinner-border h-8 w-8 border-b-2 rounded-full" :"px-16 mb-12 py-2 mt-4 ml-12 text-white rounded-full bg-brightRed hover:bg-brightRedLight focus:outline-none "}>
@@ -226,7 +226,7 @@ function index({property}) {
         setShowModal(false)
       }}
       onOk={performTransfer}
-      title={<div style={{display: 'flex', gap: 10}}><Typography color="#68738D" variant="h3">Input Buyer's Address</Typography></div>}
+      title={<div style={{display: 'flex', gap: 10}}><Typography color="#68738D" variant="h3">Input Buyer&apos;s Address</Typography></div>}
     >
       <Input
       type="text"
@@ -247,4 +247,4 @@ function index({property}) {
   )
 }
 
-export default index
+export default Index

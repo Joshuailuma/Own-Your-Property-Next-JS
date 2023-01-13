@@ -99,7 +99,7 @@ export default function Home() {
           {/* 1st flex item  flex flex-col space-y-12 makes this div be a container*/}
           <div className="flex flex-col space-y-12 md:w-1/2">
           <h2 className="max-w-md text-4xl font-bold text-center md:text-left">
-            What's different about Own Your Property?
+            What&apos;s different about Own Your Property?
           </h2>
           <p className="max-w-sm text-center text-darkGrayishBlue md:text-left">
           Manage provides all the functionality your team needs, without the
@@ -173,14 +173,14 @@ export default function Home() {
       03
     </div>
     <h3 className="text-base font-bold md:hidden">
-      Verify people's property before buying
+      Verify people&apos;s property before buying
     </h3>
   </div>
 </div>
 
 <div>
   <h3 className='hidden mb-4 text-lg font-bold md:block'>
-   Verify people's property before buying
+   Verify people&apos;s property before buying
   </h3>
   <p>See how your day-to-day tasks fit into the wider vision. Go from
     tracking progress at the milestone level all the way down to the
@@ -254,7 +254,7 @@ export default function Home() {
         {/* Flex container */}
         <div className="container flex flex-col items-center justify-between px-6 py-24 mx-auto space-y-12 md:py-12 md:flex-row md:space-y-0">
           <h2 className='text-5xl font-bold text-center text-white md:text-4xl md:max-w-xl md:text-left'>
-            Try us today. It's fully decentralized.
+            Try us today. It&apos;s fully decentralized.
           </h2>
         </div>
       </section>

@@ -10,9 +10,9 @@ import { useNotification } from '@web3uikit/core';
 import { Bell } from '@web3uikit/icons';
 import NavBar from '../components/NavBar';
 
-function products() {
+function Products() {
 
-  const [name, setName] = useState('')
+  const [name, setName] = useState("")
   const [serialNumber, setSerialNumber] = useState('')
   const [description, setDescription] = useState('')
   const [progress, setProgress] = useState(0);
@@ -523,13 +523,4 @@ return (
   )
 }
 
-export default products
-
-// export const getServerSideProps = async () => {
-//   // ✅ Can use fs here (runs only on the server)
-//   console.log(fs)
-
-//   return {
-//     props: {}, // will be passed to the page component as props
-//   }
-// };
+export default Products

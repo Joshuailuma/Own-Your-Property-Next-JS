@@ -2,6 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import { Web3Api } from '@web3uikit/icons'
 import { Discord } from '@web3uikit/icons'
+import Link from 'next/link'
 
 function Footer() {
   return (
@@ -34,9 +35,9 @@ function Footer() {
       {/* List container */}
       <div className="flex justify-around space-x-32">
         <div className="flex flex-col space-y-3 text-white">
-          <a href="/" className='hover:text-brightRed'>Home</a>
-          <a href="/addProperty" className='hover:text-brightRed'>My properties</a>
-          <a href="/about" className='hover:text-brightRed'>About</a>
+          <Link href="/" className='hover:text-brightRed'>Home</Link>
+          <Link href="/addProperty" className='hover:text-brightRed'>My properties</Link>
+          <Link href="/about" className='hover:text-brightRed'>About</Link>
         </div>
 
       
