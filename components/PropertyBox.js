@@ -36,7 +36,7 @@ async function updateUI() {
         const imageURI = tokenURIResponse.image
         //Make ipfs address to be viewable as normal address
         const imageURIURL = imageURI.replace("ipfs://", "https://ipfs.io/ipfs/")
-        console.log(`Image uri is ${imageURIURL}`);
+        // console.log(`Image uri is ${imageURIURL}`);
         setImageURI(imageURIURL)
         // We are still getting these details from ipfs json
         setPropertyNameFromJson(tokenURIResponse.name)
@@ -52,7 +52,7 @@ async function updateUI() {
 useEffect(() => {
     if (isWeb3Enabled) {
         updateUI()
-        console.log("Hello");
+        // console.log("Hello");
     }
 }, [isWeb3Enabled])
 
