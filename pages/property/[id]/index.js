@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import BasicNft from "../../../constants/BasicNft.json"
 import { useNotification } from "@web3uikit/core";
 import { Bell } from '@web3uikit/icons';
+import NavBar from "../../../components/NavBar";
 
 function Index({property}) {
     const router = useRouter()
@@ -82,7 +83,7 @@ function Index({property}) {
     })
 
     const performTransfer = async ()=>{
-      showModal(false)
+      setShowModal(false)
       if(isWeb3Enabled){
          // Store property on the blockchain and Emit an event
        const itemTransferred = await transferItem({
@@ -111,6 +112,15 @@ function Index({property}) {
         onSuccess: handleApproveSuccess,
         onError: (error)=>{handleApproveError(error)}
       })     
+    }
+
+    const getOwner = async ()=>{
+      const gottenApproval = await ownerOf({
+        onSuccess: console.log("gottenApproval"),
+        onError: (error)=>{handleApproveError(error)}
+      })    
+      console.log(gottenApproval);
+      console.log(dataCheckOwner); 
     }
 
     const handleTransferClick = async ()=>{
@@ -154,6 +164,8 @@ function Index({property}) {
     const handleTransferSuccess = async(tx)=>{
       try{
         tx.wait(1)
+        setBuyerAddress("")
+
         handleTransferNotification(tx)
       } catch(e){
         console.log(e);
@@ -193,6 +205,7 @@ function Index({property}) {
    
   return (
     <>
+    <NavBar/>
     <div className={"flex justify-center align-center"}>
 
     <div className={"max-w-md justify-center"}>

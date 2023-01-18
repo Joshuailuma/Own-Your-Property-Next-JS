@@ -77,7 +77,7 @@ let propertiesOwned = new Array()
                       listedProperties.propertyMinteds.map((property) => {
                 
                         const { ownerAddress, propertyAddress, tokenId, blockNumber } = property
-                        
+                        console.log(`Pushing created with id ${tokenId}`);
                         // Add this object to the array
                         propertiesOwned.push({
                           "ownerAddress": ownerAddress,
@@ -85,6 +85,8 @@ let propertiesOwned = new Array()
                           "tokenId": tokenId,
                           "blockNumber": blockNumber
                         })
+                        // console.log(propertiesOwned, "propert");
+                        console.log(`No of owned is ${propertiesOwned.length} from created`);  
 
                             return(
                               <>                                                       
@@ -118,36 +120,52 @@ let propertiesOwned = new Array()
 
                         const { ownerAddress, propertyAddress, tokenId, blockNumber} = property
 
+                        console.log(`No of owned is ${propertiesOwned.length} from bought 1`);  
                          // Adding propertied bought to propertiesOwned array 
-                         if(ownerAddress){                   
-                          propertiesOwned.forEach((element)=>{
-                               //Check if object in array and this object is same
+                         if(ownerAddress){
+                          for(let i=0; i < propertiesOwned.length; i++){
+
+                            let element = propertiesOwned[i] // Each element/object in the array
+                               //Check if tokenId in the object in the array and one gotten from TheGraph is same
                                if((element.tokenId) == tokenId){
-                                console.log("Same property found bought");
-                                //If this blockNumber is higher than the one we created
+                                console.log(`Same property found bought ${i} loop ${i}`);
+                                //If this blockNumber from TheGraph is higher than the one in the object loop
+                                // It means it was recently bought
                                 if(blockNumber > element.blockNumber){
-                                  //Remove the element in the last position in the array, 1 element, and add this obj
-                                  propertiesOwned.splice(-1, 1, {
+                                  // console.log(`Bl0ck from array ${element.blockNumber} block from TheGraph ${blockNumber}`);
+                                  console.log(`Replacing token id ${element.tokenId} ${element.blockNumber} owned by ${ownerAddress} in bought with ${blockNumber}`);
+                                  
+                                  // Replace the object in the array with the new one gotten from TheGraph
+                                  //Remove the element in the last position in the array, 1 element, 
+                                  propertiesOwned.splice(i, 1)
+                                  console.log(propertiesOwned.length);
+                                 // and add this obj
+                                  propertiesOwned.push( {
                                     "ownerAddress": ownerAddress,
                                     "propertyAddress": propertyAddress,
                                     "tokenId": tokenId,
                                     "blockNumber": blockNumber
                                   })
+                                  console.log(`The array legth is now ${propertiesOwned.length}`);
                                 }
                               } else{
-                                console.log("Not Same property found bought");
 
-                                //If the object is not in the array at all, add it
+                                console.log(`Not Same property found bought pushing bought with id ${tokenId} array blockNumber ${element.blockNumber} TheGraph ${blockNumber} loop ${i}`);
+                                // If the object from TheGraph is not in the array, add it to the array
                                 propertiesOwned.push({
                                   "ownerAddress": ownerAddress,
                                   "propertyAddress": propertyAddress,
                                   "tokenId": tokenId,
                                   "blockNumber": blockNumber
                                 })
+                                // Leave the loop early. We dont want the element in else
+                                // statement to be added twice to the array
+                                break;
                               }                   
-                          })
-                        }                      
-
+                          }
+                        } 
+                        console.log(`No of owned is ${propertiesOwned.length} from bought 2`);  
+                        console.log(propertiesOwned);
                             return(
                               <>                                                   
                             <PropertyBox
@@ -160,6 +178,7 @@ let propertiesOwned = new Array()
                             </>
                     
                             )
+
                         })
                         )
                 ) : (
@@ -178,31 +197,39 @@ let propertiesOwned = new Array()
                         <div className={"pt-48"}>No Property here...</div>
                     ) : (
                       listedProperties.transfers.map((property) => {
-                        // Current property address will always be constant. Its actually not in the result gotten below
+                        // Current property address will always be constant. Its actually not in the result gotten from TheGraph below
                         const propertyAddress = "0xF74EBb7bB8883E22a8Be30F8C2EDaF7f4B58f360"
                         
                         const { to: ownerAddress, tokenId, blockNumber } = property
-                        // console.log(ownerAddress);
-                        console.log(tokenId);
-                        // Adding propertied bought to propertiesOwned array 
+                        
+                        // Adding properties bought to propertiesOwned array 
                         if(ownerAddress){
-                          //Looping through the array
+                          console.log(`No of owned is ${propertiesOwned.length} from sold 1`);  
+                          //Looping through the arrayyy 
                           for(let i=0; i < propertiesOwned.length; i++){
                             let element = propertiesOwned[i]
-                             //Check if object in array and this object is same
+                             //Check if tokenId from object in array and that from TheGraph is same
                              if((element.tokenId) == tokenId){
-                              // console.log("Same property found SOld");
-                              //If this blockNumber is higher than the one we created
+                              // console.log(`Same property with id ${element.tokenId} found SOld`);
+                              // console.log(`Checking if its same as ${tokenId}`);
+
+                              //If they are thesame check if blockNumber from TheGraph is higher than the one in object array
                               if(blockNumber > element.blockNumber){
-                                //It means the current state of the item is that its recently sold
+                                // console.log(`This bl0ck ${blockNumber} 2nd block ${element.blockNumber}`);
+                                // console.log(`Removing token id ${tokenId} owned by ${ownerAddress} from sold`);
+
+                                //If its higher It means the current state of the item is that it was recently sold
                                 //Remove the element from the array of my properties since it has been sold
+                                // At position i, remove 1 element
                                 propertiesOwned.splice(i, 1)
                               }
                             } 
-                            //We dont wwant sold items in there, so we aint adding anything                   
+                            // If the sold items are not in the array, we dont need to put them in the array..
+                            // the map property will simply display the sold items in the screen, we dont want sold items..
+                            // in the properties we own, that is why there is *no else statement*
                         }
-                          
                       }
+                      console.log(`No of owned is ${propertiesOwned.length} from sold 2`);  
 
                             return(
                               <>                                                   
@@ -224,9 +251,7 @@ let propertiesOwned = new Array()
                     <div className={"pt-52"}>Web3 Currently Not Enabled</div>
                 )
                 }        
-
       </div>
-
 
       {/* Properties currently owned */}
       <h1 className="py-4 px-4 font-bold text-2xl mt-14"> Properties currently owned</h1>
@@ -236,10 +261,7 @@ let propertiesOwned = new Array()
                     loading || !listedProperties ? (
                         <div className={"pt-48"}>No Property here...</div>
                     ) : (
-                      
-
                       propertiesOwned.map((property) => {
-
                         const { ownerAddress, propertyAddress, tokenId } = property
 
                             return(
@@ -255,15 +277,11 @@ let propertiesOwned = new Array()
                             )
                         })
                         )
-
-
                 ) : (
                     <div className={"pt-52"}>Web3 Currently Not Enabled</div>
                 )
                 }        
-
       </div>
-
     </div>
   )
 }
