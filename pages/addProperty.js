@@ -9,6 +9,7 @@ import BasicNft from "../constants/BasicNft.json"
 import { useNotification } from '@web3uikit/core';
 import { Bell } from '@web3uikit/icons';
 import NavBar from '../components/NavBar';
+import { Accordion } from '@web3uikit/core'    //icons
 
 function Products() {
 
@@ -85,7 +86,7 @@ const preventDefault = (e)=> {
     setFile(file); // we will use the file state, to send it later to the server
     setPreviewUrl(URL.createObjectURL(file)); // we will use this to show the preview of the image
 
-    console.log(URL.createObjectURL(file));
+    // console.log(URL.createObjectURL(file));
     /** Reset file input */
     e.currentTarget.type = "text";
     e.currentTarget.type = "file";
@@ -150,12 +151,12 @@ const preventDefault = (e)=> {
           setIsUploaded(true)
           setIsUploading(false) //Done uploading
           setIpfsImageHash(`ipfs://${ipfsHashImage}`)
-          console.log(data);
+          // console.log(data);
         }
         setIsUploading(false) //Done uploading
              
     //Gotten the ipfs hash
-        console.log("File was uploaded successfully:", data.data.response.IpfsHash);
+        // console.log("File was uploaded successfully:", data.data.response.IpfsHash);
       } catch (e) {
         //Error in uploading file
         console.error(e);
@@ -176,7 +177,7 @@ const preventDefault = (e)=> {
     Function to upload Metadata
   */
   const onUploadMetaData = async (e) => {
-    console.log("Uploading metadata");
+    // console.log("Uploading metadata");
 
     if(isWeb3Enabled){
       try { 
@@ -187,7 +188,7 @@ const preventDefault = (e)=> {
          setIpfsMetadataHash(ipfsMetadataHashRef.current)
           
          detailsUploaded() //Notification
-        console.log(`ipfsMetadataHash is ${ipfsMetadataHash}`);
+        // console.log(`ipfsMetadataHash is ${ipfsMetadataHash}`);
         setIsMetadataUploaded(true)
     
       //Gotten the ipfs hash
@@ -272,8 +273,8 @@ const preventDefault = (e)=> {
     const handleSuccessNotification =()=>{
       dispatch({
         type: "success",
-        message: "Stored succesfully in blockchain",
-        title: "Transaction Notification",
+        message: "Stored succesfully in blockchain. PLEASE WAIT for confirmation. This might take more than 2 minutes",
+        title: "Transaction Notification 3/4",
         position: "topR",
         icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
       })
@@ -282,7 +283,7 @@ const preventDefault = (e)=> {
     const handleErrorUploadNotification =(e)=>{
       dispatch({
         type: "error",
-        message: `Faled to store ${e.message}`,
+        message: `Failed to store ${e.message}`,
         title: "Transaction Notification",
         position: "topR",
         icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
@@ -313,7 +314,7 @@ const preventDefault = (e)=> {
       dispatch({
         type: "success",
         message: "Approval gotten",
-        title: "Transaction Notification",
+        title: "Transaction Notification 4/4✅",
         position: "topR",
         icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
       })
@@ -373,7 +374,7 @@ const preventDefault = (e)=> {
       dispatch({
         type: "success",
         message: "Photo uploaded successfuly",
-        title: "Notification",
+        title: "Notification 1/4",
         position: "topR",
         icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
       })
@@ -383,7 +384,7 @@ const preventDefault = (e)=> {
       dispatch({
         type: "success",
         message: "Details uploaded",
-        title: "Notification",
+        title: "Notification 2/4",
         position: "topR",
         icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
       })
@@ -393,10 +394,11 @@ const preventDefault = (e)=> {
 return (
     <div>
      <NavBar/>
-       <section className="flex flex-col mt-12 mx-20">
-        <h1 className="text-4xl font-bold md:text-5xl"> Create property</h1>
-        <p className="text-2xl mt-6 text-darkGrayishBlue">
-         Type in the details 😎
+       <section className="flex flex-col md:flex-row mx-20">
+        <div className={"flex flex-col mt-12 "}>
+        <h1 className="text-4xl font-bold md:text-5xl"> Store a Property</h1>
+        <p className="text-2xl my-6 text-darkGrayishBlue">
+         Type in the details✍🏼
             </p>     
             <form action="" className={"mt-6, max-w-lg"} onSubmit={onSubmit}>
               <div className=" flex flex-col space-y-6">             
@@ -437,7 +439,7 @@ return (
               </div>
 
               {/* Upload image. If a file has been selected, convert and view it in a preview URL*/}
-              <div className="flex flex-col md:flex-row gap-1.5 md:py-4">
+              <div className="flex flex-col gap-4 py-4 mt-4">
               <div className="flex-grow">
                 {previewUrl ? (
                   <div className="mx-auto w-80">
@@ -478,44 +480,86 @@ return (
                   </label>
                 )}
               </div>
-              <div className="flex mt-4 md:mt-0 md:flex-col justify-center gap-1.5">
-                <button
-                  disabled={!previewUrl}
-                  onClick={onCancelFile}
-                  className="w-1/2 px-4 py-3 text-sm font-medium text-white transition-colors duration-300 bg-gray-700 rounded-sm md:w-auto md:text-base disabled:bg-gray-400 hover:bg-gray-600"
-                >
-                  Cancel image
-                </button>
-                <button
+              <div className="flex mt-4 md:mt-0 flex-col justify-center gap-1.5 rounded-md">
+              <button
                   disabled={!previewUrl}
                   onClick={onUploadImage}
-                  className="w-1/2 px-4 py-3 text-sm font-medium text-white transition-colors duration-300 bg-gray-700 rounded-sm md:w-auto md:text-base disabled:bg-gray-400 hover:bg-gray-600"
+                  className="w-1/2 mx-32 py-3 text-sm font-medium text-white transition-colors duration-300 rounded-lg bg-blue-800 md:w-auto md:text-base disabled:bg-brightRed"
                 >
                   Upload image
                 </button>
+
+                <button
+                  disabled={!previewUrl}
+                  onClick={onCancelFile}
+                  className="w-1/2 mx-32 py-3 text-sm font-medium text-white transition-colors duration-300 rounded-lg bg-blue-800 md:w-auto md:text-base disabled:bg-brightRed"
+                >
+                  Cancel image
+                </button>
+                
               </div>
             </div>
+
+            <div className='mt-7'>
             <SimpleProgressBar progress={progress} remaining={remaining}/>
+            </div>
 
 
         {/* <FileUpload className={'justify-center  mt-6'} name="demo" url="./api/upload" maxFileSize="3000000" onError={uploadSuccess} accept="image/*" onUpload={uploadFailed}></FileUpload> */}
-              <input type="submit" disabled={!isUploaded} value={isUploaded ? "Upload details" : "Upload image first"} className={isUploading ? "animate-spin spinner-border h-8 w-8 border-b-2 rounded-full" :"px-16 mb-12 py-2 mt-4 ml-12 text-white rounded-full bg-brightRed hover:bg-brightRedLight focus:outline-none"} />
+              <input type="submit" disabled={!isUploaded} value={"Upload details"} className={isUploading ? "animate-spin spinner-border h-8 w-8 border-b-2 rounded-full" :"px-16 mb-12 py-2 mt-4 ml-12 text-white rounded-lg bg-blue-800 disabled:bg-brightRed focus:outline-none"} />
 
             </form>
             <div className={"max-w-lg"} >
-            <button onClick={uploadToBlockchain} disabled={!isMetadataUploaded}  className={isLoading || isFetching ? "animate-spin spinner-border h-8 w-8 border-b-2 rounded-full" :"px-16 mb-12 py-2 mt-4 ml-12 text-white rounded-full bg-brightRed hover:bg-brightRedLight focus:outline-none"}>
-            {isMetadataUploaded ? "Upload to blockchain" : "Upload Details first"}
+            <button onClick={uploadToBlockchain} disabled={!isMetadataUploaded}  className={isLoading || isFetching ? "animate-spin spinner-border h-8 w-8 border-b-2 rounded-full" :"px-10 mb-12 py-2 mt-4 ml-12 text-white rounded-lg bg-blue-800 disabled:bg-brightRed focus:outline-none"}>
+            {"Upload to blockchain"}
                </button>
 
                <div className={isMetadataUploaded && !isBlockUploaded ? "font-bold" : "hidden"}>Please wait...</div>
 
-               <button onClick={approveProperty} disabled={!isBlockUploaded}  className={approvalIsLoading || approvalIsFetching ? "animate-spin spinner-border h-8 w-8 border-b-2 rounded-full" : "px-12 mb-12 py-2 mt-4 ml-12 text-white rounded-full bg-brightRed hover:bg-brightRedLight focus:outline-none"}>
-            {isBlockUploaded ? "Approve stored property" : "Upload to blockchain first"}
+               <button onClick={approveProperty} disabled={!isBlockUploaded}  className={approvalIsLoading || approvalIsFetching ? "animate-spin spinner-border h-8 w-8 border-b-2 rounded-full" : "px-7 mb-12 py-2 mt-4 ml-12 text-white rounded-lg bg-blue-800 disabled:bg-brightRed focus:outline-none"}>
+            {"Approve stored property"}
                </button>
             </div>
-            
-        </section>
+            </div>
 
+            {/* @2nd flex */}
+           <div>
+        <Accordion
+          id="accordion"
+          hasLockIcon
+          isExpanded
+        title="How to store a Property"
+        className="ml-10 my-12">
+
+        
+<dl class="max-w-md text-gray-900 divide-y divide-black-200 dark:text-black dark:divide-gray-700 mx-14">
+    <div class="flex flex-col pb-3">
+        <dt class="mb-1 md:text-lg font-semibold text-blue-800">1. Select an image</dt>
+        <dd class="text-lg ">Click on the icon that looks like a cloud</dd>
+    </div>
+    <div class="flex flex-col py-3">
+        <dt class="mb-1 md:text-lg font-semibold text-blue-800">2. Upload an image</dt>
+        <dd class="text-lg ">Click on the Upload image button</dd>
+    </div>
+    <div class="flex flex-col pt-3">
+        <dt class="mb-1 text-blue-800 md:text-lg font-semibold">3. Upload details</dt>
+        <dd class="text-lg">Click on the Upload details button</dd>
+    </div>
+    <div class="flex flex-col pt-3">
+        <dt class="mb-1 text-blue-800 md:text-lg font-semibold">4. Upload to blockchain</dt>
+        <dd class="text-lg">Click on the Upload to blockchain button and wait until the &apos;Please wait...&apos; message disappears.
+        This may take more than 2 minutes depending on the state of the blockchain</dd>
+    </div>
+    <div class="flex flex-col pt-3 mb-4">
+        <dt class="mb-1 text-blue-800 md:text-lg font-semibold">5. Approve stored property</dt>
+        <dd class="text-lg ">Click on the Approve stored property button to enable you transfer it in future.</dd>
+    </div>
+</dl>
+
+
+</Accordion>
+           </div>
+        </section>
 
         <Footer/>
     </div>

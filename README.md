@@ -1,34 +1,68 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Own Your Property
 
-## Getting Started
+Please note that your wallet must be connected to **Goerli Testnet** before accessing the project
 
-First, run the development server:
+## Overview
+
+Own Your Property (OYP) is a decentralized web application that allows users to:
+
+- store their property on the blockchain and access them in a decentralized manner
+
+- tell the public that a property belongs to you and it is authetic
+
+- solve the problem of properties being acquired illegally or stolen.
+
+- Properties that could be stored include anything that has a serial number. E.g electronic devices(phones, laptops), cars, etc.
+
+## Technologies used
+
+- The front end was built using Next Js and Tailwind CSS
+
+- The smart contract was developed using Solidity, tested compiled and deployed to **Goerli Testnet** with Hardhat
+
+- Images and metadata are stored on IPFS and pinned to IPFS using Pinata pinning service
+
+- The user properties stored in the blockchain is queried using TheGraph
+
+## Live site
+
+Here is the live site https://your-property-next-js-d99p.vercel.app
+
+## How to run the project locally
+
+1. First, install node js https://nodejs.org
+
+2. In your terminal run `npm install yarn`
+
+3. Run `yarn` to install the packages used in the project
+
+4. Finally, run the development server:
 
 ```bash
-npm run dev
-# or
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## How to use the project
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+### How to store a Property
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+1. Connect your wallet. Note that the **wallet must be connected to Goerli Testnet**
+2. Get some GoerliETH
+3. Navigate to `My Properties` page
+4. Click on Add a Property
+5. Follow the intructions on the page by filling in the necessary details, uploading an image of the property and clicking the buttons below accordignly.
 
-## Learn More
+- After clicking `Upload to blockchain` button, please wait for confirmation from the blockhain before `approving the property`. This might take more than 2 minutes to complete depending on the state of the blockchain.
 
-To learn more about Next.js, take a look at the following resources:
+6. Refresh `My Properties` page to see the new stored property
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### How to transfer a Property to a buyer or new owner
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+1. Connect your wallet. Note that the **wallet must be connected to Goerli Testnet**
+2. Navigate to `My Properties` page.
+3. Click on the property you want to transfer.
+4. Click on the transfer button and input the address of the new owner to-be.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## License
