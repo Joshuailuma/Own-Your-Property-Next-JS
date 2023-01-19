@@ -1,7 +1,5 @@
 # Own Your Property
 
-Please note that your wallet must be connected to **Goerli Testnet** before accessing the project
-
 ## Overview
 
 Own Your Property (OYP) is a decentralized web application that allows users to:
@@ -25,6 +23,8 @@ Own Your Property (OYP) is a decentralized web application that allows users to:
 - The user properties stored in the blockchain are queried using TheGraph
 
 ## Live site
+
+Please note that your wallet must be connected to **Goerli Testnet** before accessing the project
 
 Here is the live site https://own-your-property-next-js-d99p.vercel.app
 
@@ -63,6 +63,6 @@ yarn dev
 1. Connect your wallet. Note that the **wallet must be connected to Goerli Testnet**
 2. Navigate to `My Properties` page.
 3. Click on the property you want to transfer.
-4. Click on the transfer button and input the address of the new owner to-be.
+4. Click on the transfer button and input the address of the new owner or buyer.
 
 ## License
