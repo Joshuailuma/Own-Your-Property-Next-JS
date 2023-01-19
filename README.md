@@ -22,11 +22,11 @@ Own Your Property (OYP) is a decentralized web application that allows users to:
 
 - Images and metadata are stored on IPFS and pinned to IPFS using Pinata pinning service
 
-- The user properties stored in the blockchain is queried using TheGraph
+- The user properties stored in the blockchain are queried using TheGraph
 
 ## Live site
 
-Here is the live site https://your-property-next-js-d99p.vercel.app
+Here is the live site https://own-your-property-next-js-d99p.vercel.app
 
 ## How to run the project locally
 
