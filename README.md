@@ -30,7 +30,7 @@ Here is the live site https://own-your-property-next-js-d99p.vercel.app
 
 ## How to run the project locally
 
-1. First, install node js https://nodejs.org
+1. First, install NodeJs from https://nodejs.org
 
 2. In your terminal run `npm install yarn`
 
@@ -49,7 +49,7 @@ yarn dev
 ### How to store a Property
 
 1. Connect your wallet. Note that the **wallet must be connected to Goerli Testnet**
-2. Get some GoerliETH
+2. Get some GoerliETH from [Goerlifaucet](https://goerlifaucet.com/)
 3. Navigate to `My Properties` page
 4. Click on Add a Property
 5. Follow the intructions on the page by filling in the necessary details, uploading an image of the property and clicking the buttons below accordignly.
