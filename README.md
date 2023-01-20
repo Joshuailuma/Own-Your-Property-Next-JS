@@ -52,9 +52,13 @@ yarn dev
 2. Get some GoerliETH from [Goerlifaucet](https://goerlifaucet.com/)
 3. Navigate to `My Properties` page
 4. Click on Add a Property
+
+![screenshot1](https://github.com/Joshuailuma/Helping-Hand/blob/main/screenshot1.png?raw=true)
+
 5. Follow the intructions on the page by filling in the necessary details, uploading an image of the property and clicking the buttons below accordignly.
 
 - After clicking `Upload to blockchain` button, please wait for confirmation from the blockhain before `approving the property`. This might take more than 2 minutes to complete depending on the state of the blockchain.
+  ![screenshot2](https://github.com/Joshuailuma/Helping-Hand/blob/main/screenshot1.png?raw=true)
 
 6. Refresh `My Properties` page to see the new stored property
 
@@ -64,5 +68,7 @@ yarn dev
 2. Navigate to `My Properties` page.
 3. Click on the property you want to transfer.
 4. Click on the transfer button and input the address of the new owner or buyer.
+
+![screenshot3](https://github.com/Joshuailuma/Helping-Hand/blob/main/screenshot1.png?raw=true)
 
 ## License
