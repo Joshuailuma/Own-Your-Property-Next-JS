@@ -53,14 +53,18 @@ yarn dev
 3. Navigate to `My Properties` page
 4. Click on Add a Property
 
-![screenshot1](https://github.com/Joshuailuma/Helping-Hand/blob/main/screenshot1.png?raw=true)
+![screenshot1](https://github.com/Joshuailuma/Own-Your-Property-Next-JS/blob/main/screenshot1.png?raw=true)
 
 5. Follow the intructions on the page by filling in the necessary details, uploading an image of the property and clicking the buttons below accordingly.
 
+![screenshot2](https://github.com/Joshuailuma/Own-Your-Property-Next-JS/blob/main/screenshot2.png?raw=true)
+
 - After clicking `Upload to blockchain` button, please wait for confirmation from the blockhain before `approving the property`. This might take more than 2 minutes to complete depending on the state of the blockchain.
-  ![screenshot2](https://github.com/Joshuailuma/Helping-Hand/blob/main/screenshot1.png?raw=true)
+
+![screenshot3](https://github.com/Joshuailuma/Own-Your-Property-Next-JS/blob/main/screenshot3.png?raw=true)
 
 6. Refresh `My Properties` page to see the new stored property
+   ![screenshot4](https://github.com/Joshuailuma/Own-Your-Property-Next-JS/blob/main/screenshot4.png?raw=true)
 
 ### How to transfer a Property to a buyer or new owner
 
@@ -69,6 +73,6 @@ yarn dev
 3. Click on the property you want to transfer.
 4. Click on the transfer button and input the address of the new owner or buyer.
 
-![screenshot3](https://github.com/Joshuailuma/Helping-Hand/blob/main/screenshot1.png?raw=true)
+![screenshot5](https://github.com/Joshuailuma/Own-Your-Property-Next-JS/blob/main/screenshot5.png?raw=true)
 
 ## License

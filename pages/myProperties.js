@@ -73,7 +73,7 @@ let propertiesOwned = new Array()
 
       {isWeb3Enabled ? ( 
                     loading || !listedProperties || (Object.keys(listedProperties.propertyMinteds).length === 0) ? (
-                        <div className={"pt-48"}>No Property here...</div>
+                        <div className={"pt-16"}>No Property here...</div>
                     ) : (
                       listedProperties.propertyMinteds.map((property) => {
                 
@@ -113,7 +113,7 @@ let propertiesOwned = new Array()
           <div className="flex flex-wrap gap-4 justify-center align-center">
           {isWeb3Enabled ? (
                     loading || !listedProperties || (Object.keys(listedProperties.itemSolds).length === 0) ? (
-                        <div className={"pt-48"}>No Property here...</div>
+                        <div className={"pt-16"}>No Property here...</div>
                     ) : (
                       listedProperties.itemSolds.map((property) => {
 
@@ -190,7 +190,7 @@ let propertiesOwned = new Array()
           <div className="flex flex-wrap gap-4 justify-center align-center">
           {isWeb3Enabled ? (
                     loading || !listedProperties || (Object.keys(listedProperties.transfers).length === 0) ? (
-                        <div className={"pt-48"}>No Property here...</div>
+                        <div className={"pt-16"}>No Property here...</div>
                     ) : (
                       listedProperties.transfers.map((property) => {
                         // Current property address will always be constant. Its actually not in the result gotten from TheGraph below
@@ -254,7 +254,7 @@ let propertiesOwned = new Array()
           <div className="flex flex-wrap gap-4 justify-center align-center">
           {isWeb3Enabled ? (
                     loading || !listedProperties || (Object.keys(propertiesOwned).length === 0) ? (
-                        <div className={"pt-48"}>No Property here...</div>
+                        <div className={"pt-16"}>No Property here...</div>
                     ) : (
                       propertiesOwned.map((property) => {
                         const { ownerAddress, propertyAddress, tokenId } = property

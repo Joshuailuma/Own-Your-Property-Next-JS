@@ -506,7 +506,7 @@ return (
 
 
         {/* <FileUpload className={'justify-center  mt-6'} name="demo" url="./api/upload" maxFileSize="3000000" onError={uploadSuccess} accept="image/*" onUpload={uploadFailed}></FileUpload> */}
-              <input type="submit" disabled={!isUploaded} value={"Upload details"} className={isUploading ? "animate-spin spinner-border h-8 w-8 border-b-2 rounded-full" :"px-16 mb-12 py-2 mt-4 ml-12 text-white rounded-lg bg-blue-800 disabled:bg-brightRed focus:outline-none"} />
+              <input type="submit" disabled={!isUploaded} value={"Upload details"} className={isUploading ? "animate-spin spinner-border bg-blue-800 h-8 w-8 border-b-2 rounded-full" :"px-16 mb-12 py-2 mt-4 ml-12 text-white rounded-lg bg-blue-800 disabled:bg-brightRed focus:outline-none"} />
 
             </form>
             <div className={"max-w-lg"} >
