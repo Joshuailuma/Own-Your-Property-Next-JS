@@ -1,12 +1,43 @@
 import React from 'react'
 import Image from 'next/image'
-import { Web3Api } from '@web3uikit/icons'
-import { Discord } from '@web3uikit/icons'
 import Link from 'next/link'
+import { useRef, useState} from 'react'
+import { useNotification } from '@web3uikit/core';
+import { Bell } from '@web3uikit/icons';
+import axios from "axios";
 
-function Footer() {
+function Footer() { 
+   const [message, setMessage] = useState("")
+   const dispatch = useNotification()
+   const formRef = useRef()
+
+   async function handleSubmit(e) {
+    e.preventDefault();
+    formRef.current.reset();
+  
+    let {status} = await axios.post("/api/contact", {
+      message: message,
+    })
+    if(status == "200"){
+      dispatch({
+        type: "success",
+        message: `Message successfully sent`,
+        title: "Notification",
+        position: "topR",
+        icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+      })
+    } else{
+       dispatch({
+      type: "error",
+      message: `Couldn't send message`,
+      title: "Notification",
+      position: "topR",
+      icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
+    })
+    }
+  }
   return (
-    <footer className="bg-veryDarkBlue">
+    <footer className="bg-blue-800">
     {/* Flex container */}
     <div className="container flex flex-col-reverse justify-between px-6 py-10 mx-auto space-y-8 md:flex-row md:spacey-0">
       {/* Logo and social links container */}
@@ -19,16 +50,6 @@ function Footer() {
         {/* Logo */}
         <div className='h-8'>
         <Image src="/logo1.png" alt="illustration-intro.svg" width={100} height={10} />
-
-        {/* Social Links Container*/}
-        <div className="flex justify-center space-x-4">
-          {/* Link 1 */}
-          
-          <a href="https://grandida.com"> 
-            <Discord fontSize="50px" color="#000000" title="Bell Icon" />
-           </a>
-
-        </div>
         </div>
       </div>
 
@@ -39,15 +60,15 @@ function Footer() {
           <Link href="/addProperty" className='hover:text-brightRed'>My properties</Link>
           <Link href="/about" className='hover:text-brightRed'>About</Link>
         </div>
-
-      
       </div>
 
       {/* Input container */}
       <div className="flex flex-col justify-between">
-        <form action="">
+        <form onSubmit={handleSubmit} ref={formRef}>
           <div className="flex space-x-3">
-            <input type="text" placeholder='Send us a message' className="flex-1 px-4 rounded-full focus:outline-none" />
+            <input onChange={()=>{
+              setMessage(event.target.value)
+              }} required={true} type="text" placeholder='Send us a message' className="flex-1 px-4 rounded-full focus:outline-none" />
             <button className='px-6 py-2 text-white rounded-full bg-brightRed hover:bg-brightRedLight focus:outline-none'> 
             Send
             </button>

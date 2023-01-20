@@ -1,10 +1,10 @@
 import networkMapping from "../constants/networkMapping.json"
 // import {GET_PROPERTIES} from "../constants/subgrapQueries"
 import { useWeb3Contract, useMoralis } from 'react-moralis'
-import PropertyBox from "../components/PropertyBox";
 import Link from "next/link";
 import { gql, useQuery } from "@apollo/client";
 import NavBar from '../components/NavBar';
+import PropertyBox from "../components/PropertyBox";
 
 //Query the database according the connected web3 account
 // We are passing in a query paramenter below this function GET_PROPERTIES, {
@@ -53,10 +53,10 @@ let propertiesOwned = new Array()
 // console.log(listedProperties);
 // console.log(error);
   return (
-    <div className="container mx-auto">
+    <div className={"div mx-auto mb-10"}>
       <NavBar/>
-      <div className={"flex justify-center align-center"}>
-      <h1 className="py-4 px-4 font-bold text-2xl justify-center"> Your properties</h1>
+      <div className={"flex justify-center align-center underline"}>
+      <h1 className="py-4 px-4 font-bold text-3xl justify-center"> Your Properties</h1>
       </div>
 
       <div className={"flex justify-center align-center"}>
@@ -65,10 +65,11 @@ let propertiesOwned = new Array()
               >Add a property</Link>
       </div>
 
-              
+      <div className={"flex justify-center align-center"}>           
      <h1 className="py-4 px-4 font-bold text-2xl"> Properties created</h1>
+      </div>
 
-      <div className="flex flex-wrap gap-4">
+      <div className="flex flex-wrap gap-4 justify-center align-center">
 
       {isWeb3Enabled ? ( 
                     loading || !listedProperties ? (
@@ -85,16 +86,13 @@ let propertiesOwned = new Array()
                           "tokenId": tokenId,
                           "blockNumber": blockNumber
                         })
-                        // console.log(propertiesOwned, "propert");
-                        console.log(`No of owned is ${propertiesOwned.length} from created`);  
 
                             return(
                               <>                                                       
-                            <PropertyBox className={""}
+                            <PropertyBox
                             ownerAddress={ownerAddress} 
                             propertyAddress={propertyAddress}
                             tokenId={tokenId}
-                            available={false}
                             key={tokenId}
                             />
                             </>
@@ -103,15 +101,17 @@ let propertiesOwned = new Array()
                         )
                 )
                 ) : (
-                    <div className={"pt-52"}>Web3 Currently Not Enabled</div>
+                    <div className={"pt-52"}>Wallet not connected</div>
                 )
                 }
                 </div>
 
                 {/* Properties bought */}
+                <div className={"flex justify-center align-center"}>
           <h1 className="py-4 px-4 font-bold text-2xl mt-14"> Properties bought</h1>
-          <div className="flex flex-wrap gap-4">
+                </div>
 
+          <div className="flex flex-wrap gap-4 justify-center align-center">
           {isWeb3Enabled ? (
                     loading || !listedProperties ? (
                         <div className={"pt-48"}>No Property here...</div>
@@ -120,8 +120,7 @@ let propertiesOwned = new Array()
 
                         const { ownerAddress, propertyAddress, tokenId, blockNumber} = property
 
-                        console.log(`No of owned is ${propertiesOwned.length} from bought 1`);  
-                         // Adding propertied bought to propertiesOwned array 
+                        // Adding propertied bought to propertiesOwned array 
                          if(ownerAddress){
                           for(let i=0; i < propertiesOwned.length; i++){
 
@@ -164,15 +163,12 @@ let propertiesOwned = new Array()
                               }                   
                           }
                         } 
-                        console.log(`No of owned is ${propertiesOwned.length} from bought 2`);  
-                        console.log(propertiesOwned);
                             return(
                               <>                                                   
                             <PropertyBox
                             ownerAddress={ownerAddress} 
                             propertyAddress={propertyAddress}
                             tokenId={tokenId}
-                            available={false}
                             key={tokenId}
                             />
                             </>
@@ -182,16 +178,17 @@ let propertiesOwned = new Array()
                         })
                         )
                 ) : (
-                    <div className={"pt-52"}>Web3 Currently Not Enabled</div>
+                    <div className={"pt-52"}>Wallet not connected</div>
                 )
                 }        
 
       </div>
       
       {/* Properties sold */}
+      <div className={"flex justify-center align-center"}>
        <h1 className="py-4 px-4 font-bold text-2xl mt-14"> Properties sold</h1>
-          <div className="flex flex-wrap gap-4">
-
+       </div>
+          <div className="flex flex-wrap gap-4 justify-center align-center">
           {isWeb3Enabled ? (
                     loading || !listedProperties ? (
                         <div className={"pt-48"}>No Property here...</div>
@@ -229,7 +226,6 @@ let propertiesOwned = new Array()
                             // in the properties we own, that is why there is *no else statement*
                         }
                       }
-                      console.log(`No of owned is ${propertiesOwned.length} from sold 2`);  
 
                             return(
                               <>                                                   
@@ -237,7 +233,6 @@ let propertiesOwned = new Array()
                             owner={ownerAddress} 
                             propertyAddress={propertyAddress}
                             tokenId={tokenId} 
-                            available={false}
                             key={tokenId}
                             />
                             </>
@@ -248,15 +243,16 @@ let propertiesOwned = new Array()
                         )
                         )
                  : (
-                    <div className={"pt-52"}>Web3 Currently Not Enabled</div>
+                    <div className={"pt-52"}>Wallet not connected</div>
                 )
                 }        
       </div>
 
       {/* Properties currently owned */}
+      <div className={"flex justify-center align-center"}>
       <h1 className="py-4 px-4 font-bold text-2xl mt-14"> Properties currently owned</h1>
-          <div className="flex flex-wrap gap-4">
-
+      </div>
+          <div className="flex flex-wrap gap-4 justify-center align-center">
           {isWeb3Enabled ? (
                     loading || !listedProperties ? (
                         <div className={"pt-48"}>No Property here...</div>
@@ -270,7 +266,6 @@ let propertiesOwned = new Array()
                             ownerAddress={ownerAddress} 
                             propertyAddress={propertyAddress}
                             tokenId={tokenId}
-                            available={false}
                             key={tokenId}
                             />
                             </>                    
@@ -278,7 +273,7 @@ let propertiesOwned = new Array()
                         })
                         )
                 ) : (
-                    <div className={"pt-52"}>Web3 Currently Not Enabled</div>
+                    <div className={"pt-52"}>Wallet not connected</div>
                 )
                 }        
       </div>

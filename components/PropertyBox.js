@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Card } from "@web3uikit/core";
  import Link from "next/link";
 
-export default function PropertyBox({ownerAddress, propertyAddress, tokenId, available}) {
+export default function PropertyBox({ownerAddress, propertyAddress, tokenId}) {
     const [imageUri, setImageURI] = useState("")
     const { isWeb3Enabled, account } = useMoralis()
     const [propertyNameFromJson, setPropertyNameFromJson] = useState("")
@@ -65,7 +65,6 @@ const property = {
     propertyAddress: propertyAddress,
     tokenId: tokenId,
     ownerAddress: ownerAddress,
-    available: available
 }
 
 return (
@@ -77,15 +76,12 @@ return (
       query: property}}>
 
     <Card
-        title={propertyNameFromJson}
-         description={propertyDescriptionFromJson}>
+        title={propertyNameFromJson}>
             <div>#SN {propertySNFromJson}</div>
              <Image loader={() => imageUri}
             src={imageUri} alt="image" height="200" width="200"/> 
      </Card> 
      </Link>) : (<div>Loading </div>
-         
-
      )
     }
      </div>

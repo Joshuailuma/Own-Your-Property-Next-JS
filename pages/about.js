@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { Accordion } from '@web3uikit/core'    //icons
 import Footer from '../components/Footer'
 import NavBar from '../components/NavBar';
-
+import Link from 'next/link';
 const About = () => {
   return (
     <div>
@@ -22,10 +22,10 @@ const About = () => {
             on the Blockchain and identified as yours by the public.
             </p>
             <div class="flex justify-center md:justify-start">
-            <a
-              href="#"
+            <Link
+              href="/myProperties"
               class="p-3 px-6 pt-2 text-white bg-brightRed rounded-full baseline hover:bg-brightRedLight"
-              >Get Started</a>
+              >Get Started</Link>
           </div>
           </div>
 
@@ -41,7 +41,7 @@ const About = () => {
     id="accordion"
       isExpanded
     title="How to store a Property"
-     className="md:w-1/2"
+     className="md:w-fit mb-7 ml-4"
 >
   <ol className={"mx-9 list-decimal subpixel-antialiased font-semibold"}>
   <li> Connect your Wallet</li>

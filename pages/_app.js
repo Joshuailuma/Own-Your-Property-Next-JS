@@ -39,7 +39,8 @@ function MyApp({ Component, pageProps: { session, ...pageProps }, }) {
        <MoralisProvider initializeOnMount={false}>
         <ApolloProvider client={Client}>
        <NotificationProvider>
-       <div className={"flex my-56 justify-center align-center"}>
+        <> 
+       <div className={"flex mt-56 justify-center align-center"}>
         <NavBar/>
         <FidgetSpinner
         height="80"
@@ -52,8 +53,9 @@ function MyApp({ Component, pageProps: { session, ...pageProps }, }) {
         backgroundColor="#F4442E"
         visible={true}
       />
-      <div className={"font-serif ml-4"}>Please wait or refresh after a long time</div>
       </div>
+      <div className={"flex mt-6 justify-center align-center font-serif ml-4"}>Please wait or refresh after a long time</div>
+      </>
        </NotificationProvider>
        </ApolloProvider>   
      </MoralisProvider>
