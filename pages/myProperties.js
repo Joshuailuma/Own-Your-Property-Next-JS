@@ -77,8 +77,8 @@ let propertiesOwned = new Array()
                     ) : (
                       listedProperties.propertyMinteds.map((property) => {
                 
+                        // console.log(`Pushing created with id ${tokenId}`);
                         const { ownerAddress, propertyAddress, tokenId, blockNumber } = property
-                        console.log(`Pushing created with id ${tokenId}`);
                         // Add this object to the array
                         propertiesOwned.push({
                           "ownerAddress": ownerAddress,
@@ -137,7 +137,7 @@ let propertiesOwned = new Array()
                                   // Replace the object in the array with the new one gotten from TheGraph
                                   //Remove the element in the last position in the array, 1 element, 
                                   propertiesOwned.splice(i, 1)
-                                  console.log(propertiesOwned.length);
+                                  // console.log(propertiesOwned.length);
                                  // and add this obj
                                   propertiesOwned.push( {
                                     "ownerAddress": ownerAddress,
@@ -149,7 +149,7 @@ let propertiesOwned = new Array()
                                 }
                               } else{
 
-                                console.log(`Not Same property found bought pushing bought with id ${tokenId} array blockNumber ${element.blockNumber} TheGraph ${blockNumber} loop ${i}`);
+                                // console.log(`Not Same property found bought pushing bought with id ${tokenId} array blockNumber ${element.blockNumber} TheGraph ${blockNumber} loop ${i}`);
                                 // If the object from TheGraph is not in the array, add it to the array
                                 propertiesOwned.push({
                                   "ownerAddress": ownerAddress,

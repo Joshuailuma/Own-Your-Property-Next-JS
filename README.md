@@ -26,7 +26,7 @@ Own Your Property (OYP) is a decentralized web application that allows users to:
 
 Please note that your wallet must be connected to **Goerli Testnet** before accessing the project
 
-Here is the live site https://own-your-property-next-js-d99p.vercel.app
+Here is the live site https://own-your-property-next-js.vercel.app
 
 ## How to run the project locally
 

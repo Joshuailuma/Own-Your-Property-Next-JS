@@ -11,7 +11,7 @@ export default function Home() {
       {/* Hero section */}
       <section id='hero'>
         {/* Flex row makes it responsive */}
-        <container className="flex flex-col md:flex-row items-center px-6 mx-auto mt-10 space-y-0 md:space-y-0">
+        <div className="flex flex-col md:flex-row items-center px-6 mx-auto mt-10 space-y-0 md:space-y-0">
           {/* Left item */}
           <div className='flex flex-col mb-32 space-y-12 md:w-1/2'>
             <h1 className="max-w-md text-4xl font-bold text-center md:text-5xl md:text-left">
@@ -21,9 +21,9 @@ export default function Home() {
             Own Your Property stores your property on the Blockchain
              and allows the public verify that you are the owner of your property during sale or transfer.
             </p>
-            <div class="flex justify-center md:justify-start">
+            <div className="flex justify-center md:justify-start">
             <Link href="/myProperties"
-              class="p-3 px-6 pt-2 text-white bg-brightRed rounded-full baseline hover:bg-brightRedLight"
+              className="p-3 px-6 pt-2 text-white bg-brightRed rounded-full baseline hover:bg-brightRedLight"
               >Get Started</Link>
           </div>
           </div>
@@ -34,7 +34,7 @@ export default function Home() {
           <Image className='rounded' src="/my_stuff.png" alt="illustration-intro.svg" width={580} height={525} />
 
           </div>
-        </container>
+        </div>
       </section>
 
       {/* Features section */}
