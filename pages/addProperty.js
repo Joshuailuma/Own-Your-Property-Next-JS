@@ -408,7 +408,7 @@ return (
               <input
                 type='text'
                 required maxLength={"50"}
-                class="px-6 py-3 align-middle rounded-lg border-solid outline-double	w-80"
+                className="px-6 py-3 align-middle rounded-lg border-solid outline-double	w-80"
                 placeholder="E.g IPhone 14 pro" value={name} 
                 onChange={(e)=> setName(e.target.value)} onSubmit={preventDefault}
               />
@@ -420,7 +420,7 @@ return (
               <input
                 type='text'
                 required maxLength={"50"}
-                class="px-6 py-3 rounded-lg border-solid outline-double	w-80"
+                className="px-6 py-3 rounded-lg border-solid outline-double	w-80"
                 placeholder="Enter the serial No" value={serialNumber} 
                 onChange={(e)=> setSerialNumber(e.target.value)}
               />
@@ -431,7 +431,7 @@ return (
               <input
                 type='text'
                 required maxLength={"500"}
-                class="px-6 py-3 rounded-lg border-solid outline-double	w-80"
+                className="px-6 py-3 rounded-lg border-solid outline-double	w-80"
                 placeholder="Give us more details"
                 value={description} 
                 onChange={(e)=> setDescription(e.target.value)}
@@ -506,7 +506,7 @@ return (
 
 
         {/* <FileUpload className={'justify-center  mt-6'} name="demo" url="./api/upload" maxFileSize="3000000" onError={uploadSuccess} accept="image/*" onUpload={uploadFailed}></FileUpload> */}
-              <input type="submit" disabled={!isUploaded} value={"Upload details"} className={isUploading ? "animate-spin spinner-border h-8 w-8 border-b-2 rounded-full" :"px-16 mb-12 py-2 mt-4 ml-12 text-white rounded-lg bg-blue-800 disabled:bg-brightRed focus:outline-none"} />
+              <input type="submit" disabled={!isUploaded} value={"Upload details"} className={isUploading ? "animate-spin spinner-border bg-blue-800 h-8 w-8 border-b-2 rounded-full" :"px-16 mb-12 py-2 mt-4 ml-12 text-white rounded-lg bg-blue-800 disabled:bg-brightRed focus:outline-none"} />
 
             </form>
             <div className={"max-w-lg"} >
@@ -532,27 +532,27 @@ return (
         className="ml-10 my-12">
 
         
-<dl class="max-w-md text-gray-900 divide-y divide-black-200 dark:text-black dark:divide-gray-700 mx-14">
-    <div class="flex flex-col pb-3">
-        <dt class="mb-1 md:text-lg font-semibold text-blue-800">1. Select an image</dt>
-        <dd class="text-lg ">Click on the icon that looks like a cloud</dd>
+<dl className="max-w-md text-gray-900 divide-y divide-black-200 dark:text-black dark:divide-gray-700 mx-14">
+    <div className="flex flex-col pb-3">
+        <dt className="mb-1 md:text-lg font-semibold text-blue-800">1. Select an image</dt>
+        <dd className="text-lg ">Click on the icon that looks like a cloud</dd>
     </div>
-    <div class="flex flex-col py-3">
-        <dt class="mb-1 md:text-lg font-semibold text-blue-800">2. Upload an image</dt>
-        <dd class="text-lg ">Click on the Upload image button</dd>
+    <div className="flex flex-col py-3">
+        <dt className="mb-1 md:text-lg font-semibold text-blue-800">2. Upload an image</dt>
+        <dd className="text-lg ">Click on the Upload image button</dd>
     </div>
-    <div class="flex flex-col pt-3">
-        <dt class="mb-1 text-blue-800 md:text-lg font-semibold">3. Upload details</dt>
-        <dd class="text-lg">Click on the Upload details button</dd>
+    <div className="flex flex-col pt-3">
+        <dt className="mb-1 text-blue-800 md:text-lg font-semibold">3. Upload details</dt>
+        <dd className="text-lg">Click on the Upload details button</dd>
     </div>
-    <div class="flex flex-col pt-3">
-        <dt class="mb-1 text-blue-800 md:text-lg font-semibold">4. Upload to blockchain</dt>
-        <dd class="text-lg">Click on the Upload to blockchain button and wait until the &apos;Please wait...&apos; message disappears.
+    <div className="flex flex-col pt-3">
+        <dt className="mb-1 text-blue-800 md:text-lg font-semibold">4. Upload to blockchain</dt>
+        <dd className="text-lg">Click on the Upload to blockchain button and wait until the &apos;Please wait...&apos; message disappears.
         This may take more than 2 minutes depending on the state of the blockchain</dd>
     </div>
-    <div class="flex flex-col pt-3 mb-4">
-        <dt class="mb-1 text-blue-800 md:text-lg font-semibold">5. Approve stored property</dt>
-        <dd class="text-lg ">Click on the Approve stored property button to enable you transfer it in future.</dd>
+    <div className="flex flex-col pt-3 mb-4">
+        <dt className="mb-1 text-blue-800 md:text-lg font-semibold">5. Approve stored property</dt>
+        <dd className="text-lg ">Click on the Approve stored property button to enable you transfer it in future.</dd>
     </div>
 </dl>
 

@@ -72,13 +72,12 @@ let propertiesOwned = new Array()
       <div className="flex flex-wrap gap-4 justify-center align-center">
 
       {isWeb3Enabled ? ( 
-                    loading || !listedProperties ? (
-                        <div className={"pt-48"}>No Property here...</div>
+                    loading || !listedProperties || (Object.keys(listedProperties.propertyMinteds).length === 0) ? (
+                        <div className={"pt-16"}>No Property here...</div>
                     ) : (
                       listedProperties.propertyMinteds.map((property) => {
                 
                         const { ownerAddress, propertyAddress, tokenId, blockNumber } = property
-                        console.log(`Pushing created with id ${tokenId}`);
                         // Add this object to the array
                         propertiesOwned.push({
                           "ownerAddress": ownerAddress,
@@ -113,8 +112,8 @@ let propertiesOwned = new Array()
 
           <div className="flex flex-wrap gap-4 justify-center align-center">
           {isWeb3Enabled ? (
-                    loading || !listedProperties ? (
-                        <div className={"pt-48"}>No Property here...</div>
+                    loading || !listedProperties || (Object.keys(listedProperties.itemSolds).length === 0) ? (
+                        <div className={"pt-16"}>No Property here...</div>
                     ) : (
                       listedProperties.itemSolds.map((property) => {
 
@@ -137,7 +136,7 @@ let propertiesOwned = new Array()
                                   // Replace the object in the array with the new one gotten from TheGraph
                                   //Remove the element in the last position in the array, 1 element, 
                                   propertiesOwned.splice(i, 1)
-                                  console.log(propertiesOwned.length);
+                                  // console.log(propertiesOwned.length);
                                  // and add this obj
                                   propertiesOwned.push( {
                                     "ownerAddress": ownerAddress,
@@ -149,7 +148,7 @@ let propertiesOwned = new Array()
                                 }
                               } else{
 
-                                console.log(`Not Same property found bought pushing bought with id ${tokenId} array blockNumber ${element.blockNumber} TheGraph ${blockNumber} loop ${i}`);
+                                // console.log(`Not Same property found bought pushing bought with id ${tokenId} array blockNumber ${element.blockNumber} TheGraph ${blockNumber} loop ${i}`);
                                 // If the object from TheGraph is not in the array, add it to the array
                                 propertiesOwned.push({
                                   "ownerAddress": ownerAddress,
@@ -190,8 +189,8 @@ let propertiesOwned = new Array()
        </div>
           <div className="flex flex-wrap gap-4 justify-center align-center">
           {isWeb3Enabled ? (
-                    loading || !listedProperties ? (
-                        <div className={"pt-48"}>No Property here...</div>
+                    loading || !listedProperties || (Object.keys(listedProperties.transfers).length === 0) ? (
+                        <div className={"pt-16"}>No Property here...</div>
                     ) : (
                       listedProperties.transfers.map((property) => {
                         // Current property address will always be constant. Its actually not in the result gotten from TheGraph below
@@ -254,8 +253,8 @@ let propertiesOwned = new Array()
       </div>
           <div className="flex flex-wrap gap-4 justify-center align-center">
           {isWeb3Enabled ? (
-                    loading || !listedProperties ? (
-                        <div className={"pt-48"}>No Property here...</div>
+                    loading || !listedProperties || (Object.keys(propertiesOwned).length === 0) ? (
+                        <div className={"pt-16"}>No Property here...</div>
                     ) : (
                       propertiesOwned.map((property) => {
                         const { ownerAddress, propertyAddress, tokenId } = property

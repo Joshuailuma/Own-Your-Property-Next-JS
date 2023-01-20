@@ -21,10 +21,10 @@ const About = () => {
             Your land, property, house, electronic devices such as Phones, Laptops, Computers could be stored
             on the Blockchain and identified as yours by the public.
             </p>
-            <div class="flex justify-center md:justify-start">
+            <div className="flex justify-center md:justify-start">
             <Link
               href="/myProperties"
-              class="p-3 px-6 pt-2 text-white bg-brightRed rounded-full baseline hover:bg-brightRedLight"
+              className="p-3 px-6 pt-2 text-white bg-brightRed rounded-full baseline hover:bg-brightRedLight"
               >Get Started</Link>
           </div>
           </div>
