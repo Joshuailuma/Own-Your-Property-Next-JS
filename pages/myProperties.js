@@ -72,12 +72,11 @@ let propertiesOwned = new Array()
       <div className="flex flex-wrap gap-4 justify-center align-center">
 
       {isWeb3Enabled ? ( 
-                    loading || !listedProperties ? (
+                    loading || !listedProperties || (Object.keys(listedProperties.propertyMinteds).length === 0) ? (
                         <div className={"pt-48"}>No Property here...</div>
                     ) : (
                       listedProperties.propertyMinteds.map((property) => {
                 
-                        // console.log(`Pushing created with id ${tokenId}`);
                         const { ownerAddress, propertyAddress, tokenId, blockNumber } = property
                         // Add this object to the array
                         propertiesOwned.push({
@@ -113,7 +112,7 @@ let propertiesOwned = new Array()
 
           <div className="flex flex-wrap gap-4 justify-center align-center">
           {isWeb3Enabled ? (
-                    loading || !listedProperties ? (
+                    loading || !listedProperties || (Object.keys(listedProperties.itemSolds).length === 0) ? (
                         <div className={"pt-48"}>No Property here...</div>
                     ) : (
                       listedProperties.itemSolds.map((property) => {
@@ -190,7 +189,7 @@ let propertiesOwned = new Array()
        </div>
           <div className="flex flex-wrap gap-4 justify-center align-center">
           {isWeb3Enabled ? (
-                    loading || !listedProperties ? (
+                    loading || !listedProperties || (Object.keys(listedProperties.transfers).length === 0) ? (
                         <div className={"pt-48"}>No Property here...</div>
                     ) : (
                       listedProperties.transfers.map((property) => {
@@ -254,7 +253,7 @@ let propertiesOwned = new Array()
       </div>
           <div className="flex flex-wrap gap-4 justify-center align-center">
           {isWeb3Enabled ? (
-                    loading || !listedProperties ? (
+                    loading || !listedProperties || (Object.keys(propertiesOwned).length === 0) ? (
                         <div className={"pt-48"}>No Property here...</div>
                     ) : (
                       propertiesOwned.map((property) => {
