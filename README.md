@@ -55,7 +55,7 @@ yarn dev
 
 ![screenshot1](https://github.com/Joshuailuma/Helping-Hand/blob/main/screenshot1.png?raw=true)
 
-5. Follow the intructions on the page by filling in the necessary details, uploading an image of the property and clicking the buttons below accordignly.
+5. Follow the intructions on the page by filling in the necessary details, uploading an image of the property and clicking the buttons below accordingly.
 
 - After clicking `Upload to blockchain` button, please wait for confirmation from the blockhain before `approving the property`. This might take more than 2 minutes to complete depending on the state of the blockchain.
   ![screenshot2](https://github.com/Joshuailuma/Helping-Hand/blob/main/screenshot1.png?raw=true)
