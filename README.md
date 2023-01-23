@@ -16,11 +16,11 @@ Own Your Property (OYP) is a decentralized web application that allows users to:
 
 - The front end was built using Next Js and Tailwind CSS
 
-- The smart contract was developed using Solidity, tested compiled and deployed to **Goerli Testnet** with Hardhat
+- The [smart contract](https://github.com/Joshuailuma/Own_your_property_hardhat) was developed using Solidity, tested compiled and deployed to **Goerli Testnet** with Hardhat
 
 - Images and metadata are stored on IPFS and pinned to IPFS using Pinata pinning service
 
-- The user properties stored in the blockchain are queried using TheGraph
+- The user properties stored in the blockchain are queried using [TheGraph protocol](https://github.com/Joshuailuma/Graph_Transfer_Property)
 
 ## Live site
 
@@ -76,3 +76,5 @@ yarn dev
 ![screenshot5](https://github.com/Joshuailuma/Own-Your-Property-Next-JS/blob/main/screenshot5.png?raw=true)
 
 ## License
+
+MIT
