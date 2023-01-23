@@ -26,7 +26,6 @@ const dispatch = useNotification()
 const [isMetadataUploaded, setIsMetadataUploaded] = useState(false) //Change state based on the new
 const [isBlockUploaded, setIsBlockUploaded] = useState(false) //Change state based on the new
 
-
 const [file, setFile] = useState(null);
 const [previewUrl, setPreviewUrl] = useState("");
 const [ipfsImageHash, setIpfsImageHash] = useState("")
@@ -37,7 +36,7 @@ const [tokenId, setTokenId] = useState("")
 const { isWeb3Enabled, account, chainId } = useMoralis()
 const chainString = chainId ? parseInt(chainId).toString() : "31337"
 
-
+// For form
 let metadataTemplate = {
   name: name,
   description: description,
@@ -45,11 +44,13 @@ let metadataTemplate = {
   image: ipfsImageHash,
 }//If upload is succesful
 
-
-
+/**
+ * When a form is submitted
+ * @param {event} e 
+ */
 const onSubmit = (e)=> {
   e.preventDefault()
-  onUploadMetaData()
+  onUploadMetaData() //Upload to Ipfs
 }
 
 const preventDefault = (e)=> {
@@ -60,9 +61,11 @@ const preventDefault = (e)=> {
   */
 // defining the chooseImage handler
   const onChooseImage = (e) => {
+    // Check if wallet is connected
     if(isWeb3Enabled){
       const fileInput = e.target; //File we chose
-
+    
+      //If no file has been chosen
     if (!fileInput.files) {
       handleNoChosenFile()
       return;
@@ -86,7 +89,6 @@ const preventDefault = (e)=> {
     setFile(file); // we will use the file state, to send it later to the server
     setPreviewUrl(URL.createObjectURL(file)); // we will use this to show the preview of the image
 
-    // console.log(URL.createObjectURL(file));
     /** Reset file input */
     e.currentTarget.type = "text";
     e.currentTarget.type = "file";
@@ -94,31 +96,31 @@ const preventDefault = (e)=> {
     }else{
       connectWalletNotification()
     }
-    
   } //Done with choose image
 
-  /*
-    Function to Cancel Image upload
+  /** 
+   * Function to Cancel Image upload
   */
   const onCancelFile = (e) => {
     e.preventDefault();
+    // Leave this function if there is no file
     if (!previewUrl && !file) {
       return;
     }
-    setFile(null);
+    setFile(null); //Set the file to null
     setPreviewUrl(null);
   };
 
-  /*
-    Function to upload Image
+  /**
+   * Function to upload Image
   */
-
   const onUploadImage = async (e) => {
     e.preventDefault();
-  
+    // If there is no file present, leave the function early
     if (!file) {
       return;
     }
+    // Check if wallet is connected
     if(isWeb3Enabled){
       try {
         setIsUploading(true)
@@ -141,22 +143,20 @@ const preventDefault = (e)=> {
       setRemaining(duration);
     }
   }       
-        
+  // Post request to API 
   const {data} = await axios.post("/api/uploadImage", formData, options);
         
-        photoUploadedSuccesfully() //Show Notification
         let ipfsHashImage = data.data.response.IpfsHash
-        // CHange submit button text, if the upload was successful and have gotten an ipfs hash
+        // Get the ipfsHash from the response
+
+        // if the upload was successful and have gotten an ipfs hash
         if(ipfsHashImage != "undefined"){
           setIsUploaded(true)
           setIsUploading(false) //Done uploading
           setIpfsImageHash(`ipfs://${ipfsHashImage}`)
-          // console.log(data);
         }
         setIsUploading(false) //Done uploading
-             
-    //Gotten the ipfs hash
-        // console.log("File was uploaded successfully:", data.data.response.IpfsHash);
+        photoUploadedSuccesfully() //Show Notification
       } catch (e) {
         //Error in uploading file
         console.error(e);
@@ -168,82 +168,79 @@ const preventDefault = (e)=> {
       }
 
     } else{
-      connectWalletNotification()
+      connectWalletNotification() // If wallet isn't connected
     }
   }; // DOne with upload Image file
 
 
-  /*
-    Function to upload Metadata
+ /**
+  * Function to upload Metadata to IPFS by calling our defined API
   */
-  const onUploadMetaData = async (e) => {
-    // console.log("Uploading metadata");
-
+  const onUploadMetaData = async () => {
+    //First check if wallet is connected
     if(isWeb3Enabled){
-      try { 
+      try {
+        //Send a post request to our APi
         const {data} = await axios.post('/api/uploadMetadata', metadataTemplate);
+        //Get ipfsHash from the response
        const metadataHash = data.data.IpfsHash
-    
+        //Add ipfs to the url
        ipfsMetadataHashRef.current = `ipfs://${metadataHash}`
+       //Store it in a variable
          setIpfsMetadataHash(ipfsMetadataHashRef.current)
           
-         detailsUploaded() //Notification
-        // console.log(`ipfsMetadataHash is ${ipfsMetadataHash}`);
-        setIsMetadataUploaded(true)
-    
+         detailsUploaded() // Show Notification
+        setIsMetadataUploaded(true) // It is done uploading
       //Gotten the ipfs hash
-          // console.log("Details was uploaded successfully:", ipfsHashImage);
         } catch (e) {
-          //Error in uploading details
+          //If there is an Error in uploading details
           console.error(e);
          const error = "Sorry! something went wrong.";
-         handleSomethingWentWrong(error)
+         handleSomethingWentWrong(error) ///Notification
         }
     } else{
-      connectWalletNotification()
+      connectWalletNotification() //Notification if there is no wallet connected
     }    
   }
 
-  /* Function that does all the property storage in blochain
+  /* Function that does all the property storage in blockhain
   */
-  const basifNftAddress = networkMapping[chainString].TransferProperty[0]
-  const transferPropertyAddress = networkMapping[chainString].TransferProperty[1]
+  const basifNftAddress = networkMapping[chainString].TransferProperty[0] //Get basifNftAddress contract address
+  const transferPropertyAddress = networkMapping[chainString].TransferProperty[1] //Get transferPropertyAddress contract address
 
     const contractAbi = BasicNft
-
+    /**
+     * A contract function that creates the property in the blockchain
+     */
     const { runContractFunction: mintNft, data: dataReturned,
       error,
       isLoading,
       isFetching, } = useWeb3Contract({
       abi: contractAbi,
-      contractAddress: basifNftAddress, // specify the networkId
+      contractAddress: basifNftAddress,
       functionName: "mintNft",
       params: {tokenUri: ipfsMetadataHash},
     })
 
-    const { runContractFunction: approve, data: dataReturnedForApproval,
-      error: approvalError,
-      isLoading: approvalIsLoading,
-      isFetching: approvalIsFetching } = useWeb3Contract({
-      abi: contractAbi,
-      contractAddress: basifNftAddress, // specify the networkId
-      functionName: "approve",
-      params: {to: transferPropertyAddress,
-      tokenId: tokenId},
-    })
-
+    /**
+     * Store the property in the blockchain by calling the right functions
+     */
     const uploadToBlockchain =async (e)=>{
       e.preventDefault()
+      //Ensure wallet is connected
       if(isWeb3Enabled){
 
         // Store property on the blockchain and Emit an event
-      const blockhainStoreResult = await mintNft()
-      const mintTxReceipt = await blockhainStoreResult.wait();
+      const blockhainStoreResult = await mintNft({
+        onSuccess: handlePleaseWait,
+        onError: (error)=>{handleErrorUploadNotification(error)}
+      })
+      const mintTxReceipt = await blockhainStoreResult.wait(); //Wait to see the emitted events
       const tokenIdGottenBigNumber = mintTxReceipt.events[0].args.tokenId;
-      const tokenIdGotten = tokenIdGottenBigNumber.toNumber()
+      const tokenIdGotten = tokenIdGottenBigNumber.toNumber() //Get token Id, convert it to javascript number. We need it in our form
         setTokenId(tokenIdGotten)
         setIsBlockUploaded(true)
-
+      // Show notification if tokwnId is present
       if(tokenIdGotten){
         handleSuccessNotification()
      } 
@@ -255,20 +252,9 @@ const preventDefault = (e)=> {
       }
     }
 
-    const approveProperty =async() =>{
-      if(isWeb3Enabled){
-      const approvedProperty = await approve({
-        onSuccess: handleApproveSuccess,
-        onError: (error)=>{handleApproveError(error)}
-      })
-
-      } else{
-        connectWalletNotification()
-      }
-    }
-
+    //==========For notification ==========
     /**
-     * For notifications
+     * Notification if property is succesfully stored
      */    
     const handleSuccessNotification =()=>{
       dispatch({
@@ -280,6 +266,9 @@ const preventDefault = (e)=> {
       })
     }
 
+    /**
+     * Notification if storing property fails
+     */
     const handleErrorUploadNotification =(e)=>{
       dispatch({
         type: "error",
@@ -290,6 +279,9 @@ const preventDefault = (e)=> {
       })
     }
 
+    /**
+     * Notification when wallet is not connected
+     */
     const connectWalletNotification =(e)=>{
       dispatch({
         type: "info",
@@ -300,36 +292,22 @@ const preventDefault = (e)=> {
       })
     }
 
-    const handleApproveSuccess = async(tx)=>{
-      try{
-        tx.wait(1)
-        handleApproveNotification(tx)
-      } catch(e){
-        console.log(e);
-      }
-      
-    }
-    
-    const handleApproveNotification =()=>{
+    /**
+     * Notification to ask the user to wait
+     */
+    const handlePleaseWait =()=>{
       dispatch({
-        type: "success",
-        message: "Approval gotten",
-        title: "Transaction Notification 4/4✅",
+        type: "info",
+        message: `Wait for confirmation`,
+        title: "Please wait",
         position: "topR",
         icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
       })
     }
 
-    const handleApproveError =(e)=>{
-      dispatch({
-        type: "error",
-        message: `Error getting approval ${e.message}`,
-        title: "Transaction Notification",
-        position: "topR",
-        icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
-      })
-    }
-
+    /**
+     * Notification when no file is chosen
+     */
     const handleNoChosenFile =(e)=>{
       dispatch({
         type: "error",
@@ -340,6 +318,9 @@ const preventDefault = (e)=> {
       })
     }
 
+    /**
+     * Notification if file list is empty
+     */
     const handleEmptyFile =()=>{
       dispatch({
         type: "error",
@@ -350,6 +331,9 @@ const preventDefault = (e)=> {
       })
     }
 
+    /**
+     * Notification if image is invalid
+     */
     const handleInvalidImage =()=>{
       dispatch({
         type: "error",
@@ -360,6 +344,9 @@ const preventDefault = (e)=> {
       })
     }
 
+    /**
+     * Notification if something not stated goes wrong
+     */
     const handleSomethingWentWrong =(e)=>{
       dispatch({
         type: "error",
@@ -370,6 +357,9 @@ const preventDefault = (e)=> {
       })
     }
 
+    /**
+     * Notification if photo is successfully uploaded
+     */
     const photoUploadedSuccesfully =()=>{
       dispatch({
         type: "success",
@@ -380,6 +370,9 @@ const preventDefault = (e)=> {
       })
     }
 
+    /**
+     * Notification if details is succesfully uploaded
+     */
     const detailsUploaded =()=>{
       dispatch({
         type: "success",
@@ -401,9 +394,9 @@ return (
          Type in the details✍🏼
             </p>     
             <form action="" className={"mt-6, max-w-lg"} onSubmit={onSubmit}>
-              <div className=" flex flex-col space-y-6">             
-             {/* Name */}
+              <div className=" flex flex-col space-y-6">  
 
+             {/* Name */}
               <label htmlFor="" className="text-left">Name</label>
               <input
                 type='text'
@@ -415,18 +408,17 @@ return (
 
 
             {/* Serial no */}
-
           <label htmlFor="" className="text-left">Serial number</label>
               <input
                 type='text'
                 required maxLength={"50"}
                 className="px-6 py-3 rounded-lg border-solid outline-double	w-80"
                 placeholder="Enter the serial No" value={serialNumber} 
+                onSubmit={preventDefault}
                 onChange={(e)=> setSerialNumber(e.target.value)}
               />
 
               {/* Description */}
-
           <label htmlFor="" className="text-left">Description</label>
               <input
                 type='text'
@@ -434,6 +426,7 @@ return (
                 className="px-6 py-3 rounded-lg border-solid outline-double	w-80"
                 placeholder="Give us more details"
                 value={description} 
+                onSubmit={preventDefault}
                 onChange={(e)=> setDescription(e.target.value)}
               />
               </div>
@@ -484,7 +477,7 @@ return (
               <button
                   disabled={!previewUrl}
                   onClick={onUploadImage}
-                  className="w-1/2 mx-32 py-3 text-sm font-medium text-white transition-colors duration-300 rounded-lg bg-blue-800 md:w-auto md:text-base disabled:bg-brightRed"
+                  className="w-1/2 mx-14 py-2 mb-3 text-sm font-medium text-white transition-colors duration-300 rounded-lg bg-blue-800 md:w-auto md:text-base disabled:bg-brightRed"
                 >
                   Upload image
                 </button>
@@ -492,32 +485,25 @@ return (
                 <button
                   disabled={!previewUrl}
                   onClick={onCancelFile}
-                  className="w-1/2 mx-32 py-3 text-sm font-medium text-white transition-colors duration-300 rounded-lg bg-blue-800 md:w-auto md:text-base disabled:bg-brightRed"
+                  className="w-1/2 mx-14 py-2 text-sm font-medium text-white transition-colors duration-300 rounded-lg bg-blue-800 md:w-auto md:text-base disabled:bg-brightRed"
                 >
                   Cancel image
                 </button>
-                
               </div>
             </div>
 
-            <div className='mt-7'>
+            <div className='my-7'>
             <SimpleProgressBar progress={progress} remaining={remaining}/>
             </div>
 
 
         {/* <FileUpload className={'justify-center  mt-6'} name="demo" url="./api/upload" maxFileSize="3000000" onError={uploadSuccess} accept="image/*" onUpload={uploadFailed}></FileUpload> */}
-              <input type="submit" disabled={!isUploaded} value={"Upload details"} className={isUploading ? "animate-spin spinner-border bg-blue-800 h-8 w-8 border-b-2 rounded-full" :"px-16 mb-12 py-2 mt-4 ml-12 text-white rounded-lg bg-blue-800 disabled:bg-brightRed focus:outline-none"} />
+              <input type="submit" disabled={!isUploaded} value={"Upload details"} className={isUploading ? "animate-spin spinner-border bg-blue-800 h-8 w-8 border-b-2 rounded-full" :"px-16 mb-3 py-2 mt-4 ml-12 text-white rounded-lg bg-blue-800 disabled:bg-brightRed focus:outline-none"} />
 
             </form>
             <div className={"max-w-lg"} >
             <button onClick={uploadToBlockchain} disabled={!isMetadataUploaded}  className={isLoading || isFetching ? "animate-spin spinner-border h-8 w-8 border-b-2 rounded-full" :"px-10 mb-12 py-2 mt-4 ml-12 text-white rounded-lg bg-blue-800 disabled:bg-brightRed focus:outline-none"}>
             {"Upload to blockchain"}
-               </button>
-
-               <div className={isMetadataUploaded && !isBlockUploaded ? "font-bold" : "hidden"}>Please wait...</div>
-
-               <button onClick={approveProperty} disabled={!isBlockUploaded}  className={approvalIsLoading || approvalIsFetching ? "animate-spin spinner-border h-8 w-8 border-b-2 rounded-full" : "px-7 mb-12 py-2 mt-4 ml-12 text-white rounded-lg bg-blue-800 disabled:bg-brightRed focus:outline-none"}>
-            {"Approve stored property"}
                </button>
             </div>
             </div>
@@ -530,8 +516,7 @@ return (
           isExpanded
         title="How to store a Property"
         className="ml-10 my-12">
-
-        
+      
 <dl className="max-w-md text-gray-900 divide-y divide-black-200 dark:text-black dark:divide-gray-700 mx-14">
     <div className="flex flex-col pb-3">
         <dt className="mb-1 md:text-lg font-semibold text-blue-800">1. Select an image</dt>
@@ -547,15 +532,9 @@ return (
     </div>
     <div className="flex flex-col pt-3">
         <dt className="mb-1 text-blue-800 md:text-lg font-semibold">4. Upload to blockchain</dt>
-        <dd className="text-lg">Click on the Upload to blockchain button and wait until the &apos;Please wait...&apos; message disappears.
-        This may take more than 2 minutes depending on the state of the blockchain</dd>
-    </div>
-    <div className="flex flex-col pt-3 mb-4">
-        <dt className="mb-1 text-blue-800 md:text-lg font-semibold">5. Approve stored property</dt>
-        <dd className="text-lg ">Click on the Approve stored property button to enable you transfer it in future.</dd>
+        <dd className="text-lg">Click on the Upload to blockchain button and wait until the transaction is confirmed</dd>
     </div>
 </dl>
-
 
 </Accordion>
            </div>

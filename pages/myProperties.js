@@ -1,6 +1,5 @@
 import networkMapping from "../constants/networkMapping.json"
-// import {GET_PROPERTIES} from "../constants/subgrapQueries"
-import { useWeb3Contract, useMoralis } from 'react-moralis'
+import {useMoralis } from 'react-moralis'
 import Link from "next/link";
 import { gql, useQuery } from "@apollo/client";
 import NavBar from '../components/NavBar';
@@ -38,11 +37,15 @@ query GetPropertyMinted($account: ID!) {
 }
 `;
 
+/**
+ * A component
+ * @returns an HTML 
+ */
 function MyProperties() {
   const {isWeb3Enabled, chainId, account} = useMoralis()
 const chainString = chainId ? parseInt(chainId).toString() : "31337"
 const marketplaceAddress = networkMapping[chainString].TransferProperty[0]
-const deadAddress = "0x0000000000000000000000000000000000000000"
+const deadAddress = "0x0000000000000000000000000000000000000000" // Default address where an entity starts from
 const {loading, error, data: listedProperties} = useQuery(GET_PROPERTIES, {
   variables: {account, deadAddress},
 })
@@ -50,8 +53,6 @@ const {loading, error, data: listedProperties} = useQuery(GET_PROPERTIES, {
 // List of owned properties
 let propertiesOwned = new Array()
 
-// console.log(listedProperties);
-// console.log(error);
   return (
     <div className={"div mx-auto mb-10"}>
       <NavBar/>
@@ -119,24 +120,20 @@ let propertiesOwned = new Array()
 
                         const { ownerAddress, propertyAddress, tokenId, blockNumber} = property
 
-                        // Adding propertied bought to propertiesOwned array 
+                        // Adding properties bought to propertiesOwned array 
                          if(ownerAddress){
                           for(let i=0; i < propertiesOwned.length; i++){
 
                             let element = propertiesOwned[i] // Each element/object in the array
                                //Check if tokenId in the object in the array and one gotten from TheGraph is same
                                if((element.tokenId) == tokenId){
-                                console.log(`Same property found bought ${i} loop ${i}`);
                                 //If this blockNumber from TheGraph is higher than the one in the object loop
                                 // It means it was recently bought
                                 if(blockNumber > element.blockNumber){
-                                  // console.log(`Bl0ck from array ${element.blockNumber} block from TheGraph ${blockNumber}`);
-                                  console.log(`Replacing token id ${element.tokenId} ${element.blockNumber} owned by ${ownerAddress} in bought with ${blockNumber}`);
                                   
                                   // Replace the object in the array with the new one gotten from TheGraph
                                   //Remove the element in the last position in the array, 1 element, 
                                   propertiesOwned.splice(i, 1)
-                                  // console.log(propertiesOwned.length);
                                  // and add this obj
                                   propertiesOwned.push( {
                                     "ownerAddress": ownerAddress,
@@ -144,11 +141,8 @@ let propertiesOwned = new Array()
                                     "tokenId": tokenId,
                                     "blockNumber": blockNumber
                                   })
-                                  console.log(`The array legth is now ${propertiesOwned.length}`);
                                 }
                               } else{
-
-                                // console.log(`Not Same property found bought pushing bought with id ${tokenId} array blockNumber ${element.blockNumber} TheGraph ${blockNumber} loop ${i}`);
                                 // If the object from TheGraph is not in the array, add it to the array
                                 propertiesOwned.push({
                                   "ownerAddress": ownerAddress,
@@ -171,16 +165,13 @@ let propertiesOwned = new Array()
                             key={tokenId}
                             />
                             </>
-                    
                             )
-
                         })
                         )
                 ) : (
                     <div className={"pt-52"}>Wallet not connected</div>
                 )
                 }        
-
       </div>
       
       {/* Properties sold */}
@@ -200,20 +191,13 @@ let propertiesOwned = new Array()
                         
                         // Adding properties bought to propertiesOwned array 
                         if(ownerAddress){
-                          console.log(`No of owned is ${propertiesOwned.length} from sold 1`);  
                           //Looping through the arrayyy 
                           for(let i=0; i < propertiesOwned.length; i++){
                             let element = propertiesOwned[i]
                              //Check if tokenId from object in array and that from TheGraph is same
                              if((element.tokenId) == tokenId){
-                              // console.log(`Same property with id ${element.tokenId} found SOld`);
-                              // console.log(`Checking if its same as ${tokenId}`);
-
                               //If they are thesame check if blockNumber from TheGraph is higher than the one in object array
                               if(blockNumber > element.blockNumber){
-                                // console.log(`This bl0ck ${blockNumber} 2nd block ${element.blockNumber}`);
-                                // console.log(`Removing token id ${tokenId} owned by ${ownerAddress} from sold`);
-
                                 //If its higher It means the current state of the item is that it was recently sold
                                 //Remove the element from the array of my properties since it has been sold
                                 // At position i, remove 1 element

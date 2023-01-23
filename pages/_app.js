@@ -70,8 +70,6 @@ function MyApp({ Component, pageProps: { session, ...pageProps }, }) {
   </MoralisProvider>
       )}
     </>
-
-      
     )
 }
 

@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer"
 
+// This facilitates sending email messages to us
 const email = process.env.gmail_username
 export const transporter = nodemailer.createTransport({
     service: "gmail",
