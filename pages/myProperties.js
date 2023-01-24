@@ -77,6 +77,7 @@ let propertiesOwned = new Array()
                         <div className={"pt-16"}>No Property here...</div>
                     ) : (
                       listedProperties.propertyMinteds.map((property) => {
+                        
                 
                         const { ownerAddress, propertyAddress, tokenId, blockNumber } = property
                         // Add this object to the array
@@ -124,13 +125,20 @@ let propertiesOwned = new Array()
                          if(ownerAddress){
                           for(let i=0; i < propertiesOwned.length; i++){
 
-                            let element = propertiesOwned[i] // Each element/object in the array
+                            let elementInArray = propertiesOwned[i] // Each element/object in the array
                                //Check if tokenId in the object in the array and one gotten from TheGraph is same
-                               if((element.tokenId) == tokenId){
+                               if((elementInArray.tokenId) == tokenId){
                                 //If this blockNumber from TheGraph is higher than the one in the object loop
                                 // It means it was recently bought
-                                if(blockNumber > element.blockNumber){
-                                  
+                                if(blockNumber > elementInArray.blockNumber){
+                                  // console.log(property);
+                                  // console.log('Is greater than');
+
+                                  // console.log(elementInArray);
+                                  // console.log('Replacing');
+                                  // console.log(propertiesOwned[i]);
+
+
                                   // Replace the object in the array with the new one gotten from TheGraph
                                   //Remove the element in the last position in the array, 1 element, 
                                   propertiesOwned.splice(i, 1)
@@ -142,6 +150,7 @@ let propertiesOwned = new Array()
                                     "blockNumber": blockNumber
                                   })
                                 }
+
                               } else{
                                 // If the object from TheGraph is not in the array, add it to the array
                                 propertiesOwned.push({
@@ -153,9 +162,13 @@ let propertiesOwned = new Array()
                                 // Leave the loop early. We dont want the element in else
                                 // statement to be added twice to the array
                                 break;
-                              }                   
+                              }   
+                
                           }
                         } 
+                        console.log(propertiesOwned[0]);
+
+
                             return(
                               <>                                                   
                             <PropertyBox
