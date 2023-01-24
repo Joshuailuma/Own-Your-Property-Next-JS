@@ -238,19 +238,24 @@ const preventDefault = (e)=> {
       if(isWeb3Enabled){
 
         // Store property on the blockchain and Emit an event
-      const blockhainStoreResult = await mintNft({
+      const contractInteraction = await mintNft({
         onSuccess: handlePleaseWait,
         onError: (error)=>{handleErrorUploadNotification(error)}
       })
-      const mintTxReceipt = await blockhainStoreResult.wait(); //Wait to see the emitted events
-      const tokenIdGottenBigNumber = mintTxReceipt.events[0].args.tokenId;
-      const tokenIdGotten = tokenIdGottenBigNumber.toNumber() //Get token Id, convert it to javascript number. We need it in our form
-        setTokenId(tokenIdGotten)
-        setIsBlockUploaded(true)
-      // Show notification if tokwnId is present
-      if(tokenIdGotten){
-        handleSuccessNotification()
-     } 
+
+      // There is a result from the transaction
+      if(contractInteraction){
+        const mintTxReceipt = await contractInteraction.wait(); //Wait to see the emitted events
+        const tokenIdGottenBigNumber = mintTxReceipt.events[0].args.tokenId;
+        const tokenIdGotten = tokenIdGottenBigNumber.toNumber() //Get token Id, convert it to javascript number. We need it in our form
+          setTokenId(tokenIdGotten)
+          setIsBlockUploaded(true)
+        // Show notification if tokwnId is present
+        if(tokenIdGotten){
+          handleSuccessNotification()
+       } 
+      }
+
      if(error){
       handleErrorUploadNotification(error)
      }
