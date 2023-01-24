@@ -63,7 +63,7 @@ yarn dev
 
 ![screenshot3](https://github.com/Joshuailuma/Own-Your-Property-Next-JS/blob/main/screenshot3.png?raw=true)
 
-6. Refresh `My Properties` page to see the new stored property
+6. Navigate to `My Properties` page and refresh the page to see the new stored property
    ![screenshot4](https://github.com/Joshuailuma/Own-Your-Property-Next-JS/blob/main/screenshot4.png?raw=true)
 
 ### How to transfer a Property to a buyer or new owner
