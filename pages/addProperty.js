@@ -53,9 +53,16 @@ const onSubmit = (e)=> {
   onUploadMetaData() //Upload to Ipfs
 }
 
+/**
+ * Prevent form submission when enter key is pressed
+ * @param {event} e 
+ */
 const preventDefault = (e)=> {
+  if(e.keyCode === 13){
   e.preventDefault()
   }
+  }
+
   /*
     Function to choose image
   */
@@ -259,8 +266,8 @@ const preventDefault = (e)=> {
     const handleSuccessNotification =()=>{
       dispatch({
         type: "success",
-        message: "Stored succesfully in blockchain. PLEASE WAIT for confirmation. This might take more than 2 minutes",
-        title: "Transaction Notification 3/4",
+        message: "Stored succesfully on the blockchain",
+        title: "Transaction Notification 3/3✅",
         position: "topR",
         icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
       })
@@ -293,12 +300,12 @@ const preventDefault = (e)=> {
     }
 
     /**
-     * Notification to ask the user to wait
+     * Notification asking the user to wait
      */
     const handlePleaseWait =()=>{
       dispatch({
         type: "info",
-        message: `Wait for confirmation`,
+        message: `Wait for confirmation...`,
         title: "Please wait",
         position: "topR",
         icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
@@ -364,7 +371,7 @@ const preventDefault = (e)=> {
       dispatch({
         type: "success",
         message: "Photo uploaded successfuly",
-        title: "Notification 1/4",
+        title: "Notification 1/3",
         position: "topR",
         icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
       })
@@ -377,7 +384,7 @@ const preventDefault = (e)=> {
       dispatch({
         type: "success",
         message: "Details uploaded",
-        title: "Notification 2/4",
+        title: "Notification 2/3",
         position: "topR",
         icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
       })
@@ -393,7 +400,7 @@ return (
         <p className="text-2xl my-6 text-darkGrayishBlue">
          Type in the details✍🏼
             </p>     
-            <form action="" className={"mt-6, max-w-lg"} onSubmit={onSubmit}>
+            <form className={"mt-6, max-w-lg"} onKeyDown={preventDefault} onSubmit={onSubmit}>
               <div className=" flex flex-col space-y-6">  
 
              {/* Name */}
@@ -403,7 +410,7 @@ return (
                 required maxLength={"50"}
                 className="px-6 py-3 align-middle rounded-lg border-solid outline-double	w-80"
                 placeholder="E.g IPhone 14 pro" value={name} 
-                onChange={(e)=> setName(e.target.value)} onSubmit={preventDefault}
+                onChange={(e)=> setName(e.target.value)}
               />
 
 
@@ -414,7 +421,6 @@ return (
                 required maxLength={"50"}
                 className="px-6 py-3 rounded-lg border-solid outline-double	w-80"
                 placeholder="Enter the serial No" value={serialNumber} 
-                onSubmit={preventDefault}
                 onChange={(e)=> setSerialNumber(e.target.value)}
               />
 
@@ -426,7 +432,6 @@ return (
                 className="px-6 py-3 rounded-lg border-solid outline-double	w-80"
                 placeholder="Give us more details"
                 value={description} 
-                onSubmit={preventDefault}
                 onChange={(e)=> setDescription(e.target.value)}
               />
               </div>
