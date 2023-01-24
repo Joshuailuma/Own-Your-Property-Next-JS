@@ -57,11 +57,11 @@ yarn dev
 
 5. Follow the intructions on the page by filling in the necessary details, uploading an image of the property and clicking the buttons below accordingly.
 
-![screenshot2](https://github.com/Joshuailuma/Own-Your-Property-Next-JS/blob/main/screenshot2.png?raw=true)
+![screenshot2](https://github.com/Joshuailuma/Own-Your-Property-Next-JS/blob/main/screenshot2.2.png?raw=true)
 
 - After clicking `Upload to blockchain` button, please wait for confirmation from the blockhain. This might take more than 2 minutes
 
-![screenshot3](https://github.com/Joshuailuma/Own-Your-Property-Next-JS/blob/main/screenshot3.png?raw=true)
+![screenshot3](https://github.com/Joshuailuma/Own-Your-Property-Next-JS/blob/main/screenshot3.3.png?raw=true)
 
 6. Navigate to `My Properties` page and refresh the page to see the new stored property
    ![screenshot4](https://github.com/Joshuailuma/Own-Your-Property-Next-JS/blob/main/screenshot4.png?raw=true)
