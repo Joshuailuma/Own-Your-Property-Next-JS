@@ -59,19 +59,20 @@ yarn dev
 
 ![screenshot2](https://github.com/Joshuailuma/Own-Your-Property-Next-JS/blob/main/screenshot2.png?raw=true)
 
-- After clicking `Upload to blockchain` button, please wait for confirmation from the blockhain before `approving the property`. This might take more than 2 minutes to complete depending on the state of the blockchain.
+- After clicking `Upload to blockchain` button, please wait for confirmation from the blockhain. This might take more than 2 minutes
 
 ![screenshot3](https://github.com/Joshuailuma/Own-Your-Property-Next-JS/blob/main/screenshot3.png?raw=true)
 
-6. Refresh `My Properties` page to see the new stored property
+6. Navigate to `My Properties` page and refresh the page to see the new stored property
    ![screenshot4](https://github.com/Joshuailuma/Own-Your-Property-Next-JS/blob/main/screenshot4.png?raw=true)
 
 ### How to transfer a Property to a buyer or new owner
 
 1. Connect your wallet. Note that the **wallet must be connected to Goerli Testnet**
-2. Navigate to `My Properties` page.
-3. Click on the property you want to transfer.
-4. Click on the transfer button and input the address of the new owner or buyer.
+2. Navigate to `My Properties` page
+3. Click on the property you want to transfer
+4. Click on "Get approval" to enable you transfer the property
+5. Click on the transfer button and input the address of the new owner or buyer.
 
 ![screenshot5](https://github.com/Joshuailuma/Own-Your-Property-Next-JS/blob/main/screenshot5.png?raw=true)
 

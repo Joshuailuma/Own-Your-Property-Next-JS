@@ -1,5 +1,8 @@
-import prettyMS from "pretty-ms";// convert from milliseconds to a human-readable format.
-
+import prettyMS from "pretty-ms";// To help convert from milliseconds to a human-readable format.
+/**
+  To help us display progress so far
+ *
+*///
 const SimpleProgressBar = ({ progress = 0, remaining = 0, }) => {
     return (
         <>

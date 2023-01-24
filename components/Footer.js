@@ -8,17 +8,25 @@ import axios from "axios";
 
 function Footer() { 
    const [message, setMessage] = useState("")
-   const dispatch = useNotification()
-   const formRef = useRef()
+   const dispatch = useNotification() //For notification
+   const formRef = useRef() // To clear form data
 
+   /**
+    * When submit button is pressed
+    * @param {event} e 
+    */
    async function handleSubmit(e) {
     e.preventDefault();
-    formRef.current.reset();
-  
+    formRef.current.reset(); // Clear the form
+    
+    // Call the API
     let {status} = await axios.post("/api/contact", {
       message: message,
     })
+
+    // If result from the API is 200 or successful
     if(status == "200"){
+      // Send the success notification
       dispatch({
         type: "success",
         message: `Message successfully sent`,
@@ -27,6 +35,7 @@ function Footer() {
         icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
       })
     } else{
+      // If the result is not success, send the error notification
        dispatch({
       type: "error",
       message: `Couldn't send message`,
@@ -80,7 +89,6 @@ function Footer() {
       </div>
     </div>
   </footer>
-
   )
 }
 

@@ -4,6 +4,8 @@ import { Accordion } from '@web3uikit/core'    //icons
 import Footer from '../components/Footer'
 import NavBar from '../components/NavBar';
 import Link from 'next/link';
+
+
 const About = () => {
   return (
     <div>
@@ -33,7 +35,6 @@ const About = () => {
           <div className='mid:w-1/2'>
 
           <Image src="/home.jpeg" alt="illustration-intro.svg" width={580} height={525} />
-
           </div>
         </container>
 
@@ -41,7 +42,7 @@ const About = () => {
     id="accordion"
       isExpanded
     title="How to store a Property"
-     className="md:w-fit mb-7 ml-4"
+    className="md:w-fit mb-7 ml-4"
 >
   <ol className={"mx-9 list-decimal subpixel-antialiased font-semibold"}>
   <li> Connect your Wallet</li>
@@ -51,15 +52,10 @@ const About = () => {
   <li> Upload an Image</li>
   <li> Upload details</li>
   <li> Upload to blockchain</li>
-  <li> Finally get property approval</li>
   </ol>
 
-
-
 </Accordion>
-
       </section>
-
       <Footer/>
     </div>
   )

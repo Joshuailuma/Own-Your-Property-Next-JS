@@ -12,51 +12,53 @@ export default function PropertyBox({ownerAddress, propertyAddress, tokenId}) {
     const [propertyDescriptionFromJson, setPropertyDescriptionFromJson] = useState("")
     const [propertySNFromJson, setPropertySNFromJson] = useState("")
 
+    /**
+     * Contract function to get token URI
+     */
     const { runContractFunction: getTokenURI } = useWeb3Contract({
         abi: nftAbi,
         contractAddress: propertyAddress,
         functionName: "getTokenUri",
         params: {
-            tokenId: tokenId,
+            tokenId: tokenId, //We pass in tokenID as parameter to the function
         }
     })
     
 async function updateUI() {
     const tokenURI = await getTokenURI()
 
+    // If token URI has been gotten from the contract
     if(tokenURI){
         // IPFS Gateway: A server that will return IPFS files from a "normal" URL.
+        //..basicly adding http to the ipfs url
         const requestURL = tokenURI.replace("ipfs://", "https://ipfs.io/ipfs/")
-        //I stopped here
-        // console.log(`Found token uri ${requestURL}`);
-
+        
+        // Go to that site and fetch the json. Fetch is a javascript http request function
         const tokenURIResponse = await (await fetch(requestURL)).json()
 
         // Get the image field from the json
         const imageURI = tokenURIResponse.image
-        //Make ipfs address to be viewable as normal address
+        //Make ipfs address of the image gotten to be viewable as normal address
         const imageURIURL = imageURI.replace("ipfs://", "https://ipfs.io/ipfs/")
-        // console.log(`Image uri is ${imageURIURL}`);
+
+        // Save the image uri in a variable
         setImageURI(imageURIURL)
-        // We are still getting these details from ipfs json
+        // We are still getting these details from ipfs json and storing it in the variables
         setPropertyNameFromJson(tokenURIResponse.name)
         setPropertyDescriptionFromJson(tokenURIResponse.description)
         setPropertySNFromJson(tokenURIResponse.serialNumber)
-
     } else{
         console.log("No token uri present");
     }
-
 }
 
 useEffect(() => {
     if (isWeb3Enabled) {
         updateUI()
-        // console.log("Hello");
     }
 }, [isWeb3Enabled])
 
-// We want to pass this to the next screen
+// We want to pass this details to the next screen. So we are saving it as an object
 const property = {
     name: propertyNameFromJson,
     description: propertyDescriptionFromJson,
@@ -70,10 +72,10 @@ const property = {
 return (
     <>
     <div>{imageUri ? (
-
-<Link href={{
+    // Wrap card in a link
+    <Link href={{
     pathname: `/property/${tokenId}`,
-      query: property}}>
+    query: property}}>
 
     <Card
         title={propertyNameFromJson}>
@@ -81,7 +83,8 @@ return (
              <Image loader={() => imageUri}
             src={imageUri} alt="image" height="200" width="200"/> 
      </Card> 
-     </Link>) : (<div>Loading </div>
+     </Link>) : (
+     <div>Loading </div>
      )
     }
      </div>

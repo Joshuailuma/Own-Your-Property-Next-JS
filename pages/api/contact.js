@@ -1,5 +1,8 @@
 import { mailOptions, transporter } from "../../utils/nodemailer";
 
+//
+//For sends to send message to the contact specified
+//
 export default async function Handler(req, res){
     if(req.method === "POST"){
         const {message} = req.body;
