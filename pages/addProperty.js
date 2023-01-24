@@ -520,9 +520,9 @@ return (
           hasLockIcon
           isExpanded
         title="How to store a Property"
-        className="ml-10 my-12">
+        className="md:ml-10 my-12">
       
-<dl className="max-w-md text-gray-900 divide-y divide-black-200 dark:text-black dark:divide-gray-700 mx-14">
+<dl className="max-w-md text-gray-900 divide-y divide-black-200 dark:text-black dark:divide-gray-700 md:mx-14 mx-6">
     <div className="flex flex-col pb-3">
         <dt className="mb-1 md:text-lg font-semibold text-blue-800">1. Select an image</dt>
         <dd className="text-lg ">Click on the icon that looks like a cloud</dd>
