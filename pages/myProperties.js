@@ -78,7 +78,7 @@ let propertiesOwned = new Array()
                     ) : (
                       listedProperties.propertyMinteds.map((property) => {
                         
-                
+                        
                         const { ownerAddress, propertyAddress, tokenId, blockNumber } = property
                         // Add this object to the array
                         propertiesOwned.push({
@@ -87,6 +87,7 @@ let propertiesOwned = new Array()
                           "tokenId": tokenId,
                           "blockNumber": blockNumber
                         })
+                        console.log(`TokenId from Property created ${tokenId}`);
 
                             return(
                               <>                                                       
@@ -118,20 +119,24 @@ let propertiesOwned = new Array()
                         <div className={"pt-16"}>No Property here...</div>
                     ) : (
                       listedProperties.itemSolds.map((property) => {
+                        console.log(1111);
 
                         const { ownerAddress, propertyAddress, tokenId, blockNumber} = property
 
                         // Adding properties bought to propertiesOwned array 
                          if(ownerAddress){
+                          // I need this loop to run
                           for(let i=0; i < propertiesOwned.length; i++){
-
+                            // each loop checks both the if and else statement and executes 1
                             let elementInArray = propertiesOwned[i] // Each element/object in the array
-                               //Check if tokenId in the object in the array and one gotten from TheGraph is same
-                               if((elementInArray.tokenId) == tokenId){
-                                //If this blockNumber from TheGraph is higher than the one in the object loop
+                            //Check if tokenId in the object in the array and one gotten from TheGraph is same
+                            if(tokenId === elementInArray.tokenId){
+                              //If this blockNumber from TheGraph is higher than the one in the object loop
+                              // console.log(`TOkenId is ${propertiesOwned[i].tokenId} block no is ${propertiesOwned[i].blockNumber}`);
                                 // It means it was recently bought
                                 if(blockNumber > elementInArray.blockNumber){
-                                  // console.log(property);
+                                  // console.log(`Replacing ${propertiesOwned[i].blockNumber} with ${blockNumber}`);
+
                                   // console.log('Is greater than');
 
                                   // console.log(elementInArray);
@@ -142,6 +147,7 @@ let propertiesOwned = new Array()
                                   // Replace the object in the array with the new one gotten from TheGraph
                                   //Remove the element in the last position in the array, 1 element, 
                                   propertiesOwned.splice(i, 1)
+                                  // console.log(propertiesOwned.length)
                                  // and add this obj
                                   propertiesOwned.push( {
                                     "ownerAddress": ownerAddress,
@@ -149,9 +155,16 @@ let propertiesOwned = new Array()
                                     "tokenId": tokenId,
                                     "blockNumber": blockNumber
                                   })
+                                  console.log("yes")
+                                  console.log(propertiesOwned.length)
+                                  break;
                                 }
 
                               } else{
+                                console.log("No")
+                                
+                                // If we have gotten to the end of the loop
+                                if(i == propertiesOwned.length-1){
                                 // If the object from TheGraph is not in the array, add it to the array
                                 propertiesOwned.push({
                                   "ownerAddress": ownerAddress,
@@ -159,14 +172,17 @@ let propertiesOwned = new Array()
                                   "tokenId": tokenId,
                                   "blockNumber": blockNumber
                                 })
+                                console.log('Gotten to end of loop')
+                              }
+
+                              
+
                                 // Leave the loop early. We dont want the element in else
                                 // statement to be added twice to the array
-                                break;
                               }   
                 
                           }
                         } 
-                        console.log(propertiesOwned[0]);
 
 
                             return(
