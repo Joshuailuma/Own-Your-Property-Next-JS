@@ -387,14 +387,14 @@ const preventDefault = (e)=> {
 return (
     <div>
      <NavBar/>
-       <section className="flex flex-col md:flex-row mx-20">
-        <div className={"flex flex-col mt-12 "}>
+       <section className="flex flex-col max-w-full md:flex-row mx-6 md:mx-20">
+        <div className={"flex flex-col mt-12"}>
         <h1 className="text-4xl font-bold md:text-5xl"> Store a Property</h1>
         <p className="text-2xl my-6 text-darkGrayishBlue">
          Type in the details✍🏼
             </p>     
             <form action="" className={"mt-6, max-w-lg"} onSubmit={onSubmit}>
-              <div className=" flex flex-col space-y-6">  
+              <div className="flex flex-col space-y-6">  
 
              {/* Name */}
               <label htmlFor="" className="text-left">Name</label>
@@ -509,7 +509,7 @@ return (
             </div>
 
             {/* @2nd flex */}
-           <div>
+           <div className="max-w-lg">
         <Accordion
           id="accordion"
           hasLockIcon
