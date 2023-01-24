@@ -57,14 +57,16 @@ function Index() {
      */
     const handleApprove = async ()=>{
       if(isWeb3Enabled){
-      const itemApproved = await approve({
+      const contractInteraction = await approve({
         onSuccess: handlePleaseWait,
         onError: handleApproveError
        })
 
-       await itemApproved.wait(); //Wait to see the emitted events
-
-       handleApproveSuccess()
+       // If the contractInteraction has a result
+       if(contractInteraction){
+         await contractInteraction.wait(); //Wait to see the emitted events
+         handleApproveSuccess()
+       }
 
       } else{
         // Show notification if wallet is not connected
@@ -80,13 +82,16 @@ function Index() {
       // Check if wallet is connected
       if(isWeb3Enabled){
          // Store property on the blockchain and Emit an event
-       const itemTransferred = await transferItem({
+       const contractInteraction = await transferItem({
         onSuccess: handlePleaseWait,
-        onError: (error)=>{handleTransferError(error)}
+        onError: (e)=>{handleTransferError(e)}
        })
 
-       await itemTransferred.wait()
-       handleTransferSuccess()
+       // If there is a result from the contract interaction
+       if(contractInteraction){
+         await contractInteraction.wait()
+         handleTransferSuccess()
+       }
       }else{
         // Show notification if wallet is not connected
         connectWalletNotification()
@@ -133,7 +138,7 @@ function Index() {
     const handleTransferError =(e)=>{
       dispatch({
         type: "error",
-        message: `Error trasferring property ${e.mssage}`,
+        message: `Error trasferring property ${e.message}`,
         title: "Transaction Notification",
         position: "topR",
         icon: <Bell fontSize="50px" color="#000000" title="Bell Icon" />
