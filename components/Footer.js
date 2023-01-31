@@ -66,7 +66,7 @@ function Footer() {
       <div className="flex justify-around space-x-32">
         <div className="flex flex-col space-y-3 text-white">
           <Link href="/" className='hover:text-brightRed'>Home</Link>
-          <Link href="/addProperty" className='hover:text-brightRed'>My properties</Link>
+          <Link href="/myProperties" className='hover:text-brightRed'>My properties</Link>
           <Link href="/about" className='hover:text-brightRed'>About</Link>
         </div>
       </div>
