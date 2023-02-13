@@ -220,7 +220,7 @@ function Index() {
     <h1> Get an approval before tranferring a property</h1>
     </div>
     <div className={"mb-12 flex justify-center text-2xl"}>
-    <h1> You can only get approvals for properties you own</h1>
+    <h2> You can only get approvals for properties you own</h2>
     </div>
 
     <div className={"flex justify-center align-center"}>
