@@ -80,7 +80,7 @@ return (
     <Card
         title={propertyNameFromJson}>
             <div>#SN {propertySNFromJson}</div>
-             <Image loader={() => imageUri}
+             <Image loader={() => imageUri} unoptimized={true}
             src={imageUri} alt="image" height="200" width="200"/> 
      </Card> 
      </Link>) : (

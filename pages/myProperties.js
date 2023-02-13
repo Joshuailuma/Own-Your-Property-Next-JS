@@ -77,7 +77,7 @@ let propertiesOwned = new Array()
                     loading || !listedProperties || (Object.keys(listedProperties.propertyMinteds).length === 0) ? (
                         <div className={"pt-16"}>No Property here...</div>
                     ) : (
-                      listedProperties.propertyMinteds.map((property) => {
+                      listedProperties.propertyMinteds.map((property, index) => {
                         
                         
                         const { ownerAddress, propertyAddress, tokenId, blockNumber } = property
@@ -95,7 +95,7 @@ let propertiesOwned = new Array()
                             ownerAddress={ownerAddress} 
                             propertyAddress={propertyAddress}
                             tokenId={tokenId}
-                            key={tokenId+blockNumber}
+                            key={index}
                             />
                             </>
                             )
@@ -118,7 +118,7 @@ let propertiesOwned = new Array()
                     loading || !listedProperties || (Object.keys(listedProperties.itemSolds).length === 0) ? (
                         <div className={"pt-16"}>No Property here...</div>
                     ) : (
-                      listedProperties.itemSolds.map((property) => {
+                      listedProperties.itemSolds.map((property, index) => {
 
                         const { ownerAddress, propertyAddress, tokenId, blockNumber} = property
 
@@ -174,7 +174,7 @@ let propertiesOwned = new Array()
                             ownerAddress={ownerAddress} 
                             propertyAddress={propertyAddress}
                             tokenId={tokenId}
-                            key={tokenId+blockNumber}
+                            key={index}
                             />
                             </>
                             )
@@ -195,7 +195,7 @@ let propertiesOwned = new Array()
                     loading || !listedProperties || (Object.keys(listedProperties.transfers).length === 0) ? (
                         <div className={"pt-16"}>No Property here...</div>
                     ) : (
-                      listedProperties.transfers.map((property) => {
+                      listedProperties.transfers.map((property, index) => {
                         // Current property address will always be constant. Its actually not in the result gotten from TheGraph below
                         const propertyAddress = "0xF74EBb7bB8883E22a8Be30F8C2EDaF7f4B58f360"
                         
@@ -228,7 +228,7 @@ let propertiesOwned = new Array()
                             owner={ownerAddress} 
                             propertyAddress={propertyAddress}
                             tokenId={tokenId} 
-                            key={tokenId+blockNumber}
+                            key={index}
                             />
                             </>
                     
@@ -252,7 +252,7 @@ let propertiesOwned = new Array()
                     loading || !listedProperties || (Object.keys(propertiesOwned).length === 0) ? (
                         <div className={"pt-16"}>No Property here...</div>
                     ) : (
-                      propertiesOwned.map((property) => {
+                      propertiesOwned.map((property, index) => {
                         const { ownerAddress, propertyAddress, tokenId, blockNumber } = property
 
                             return(
@@ -261,7 +261,7 @@ let propertiesOwned = new Array()
                             ownerAddress={ownerAddress} 
                             propertyAddress={propertyAddress}
                             tokenId={tokenId}
-                            key={tokenId+blockNumber}
+                            key={index}
                             />
                             </>                    
                             )
