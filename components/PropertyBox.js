@@ -31,7 +31,7 @@ async function updateUI() {
     if(tokenURI){
         // IPFS Gateway: A server that will return IPFS files from a "normal" URL.
         //..basicly adding http to the ipfs url
-        const requestURL = tokenURI.replace("ipfs://", "https://ipfs.io/ipfs/")
+        const requestURL = tokenURI.replace("ipfs://", "https://gateway.pinata.cloud/ipfs/")
         
         // Go to that site and fetch the json. Fetch is a javascript http request function
         const tokenURIResponse = await (await fetch(requestURL)).json()
@@ -39,7 +39,7 @@ async function updateUI() {
         // Get the image field from the json
         const imageURI = tokenURIResponse.image
         //Make ipfs address of the image gotten to be viewable as normal address
-        const imageURIURL = imageURI.replace("ipfs://", "https://ipfs.io/ipfs/")
+        const imageURIURL = imageURI.replace("ipfs://", "https://gateway.pinata.cloud/ipfs/")
 
         // Save the image uri in a variable
         setImageURI(imageURIURL)
