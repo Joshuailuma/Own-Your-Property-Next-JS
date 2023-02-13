@@ -216,11 +216,11 @@ function Index() {
     <div className={"mt-10 mb-12 flex justify-center text-3xl tracking-wider font-bold no-underline hover:underline"}>
     <h1> Transfer Property to a buyer</h1>
     </div>
-    <div className={"mt-10 mb-2 flex justify-center text-2xl"}>
+    <div className={"mt-10 mb-2 flex justify-center text-3xl"}>
     <h1> Get an approval before tranferring a property</h1>
     </div>
     <div className={"mb-12 flex justify-center text-2xl"}>
-    <h1> You can only get approvals for properties you own</h1>
+    <h2> You can only get approvals for properties you own</h2>
     </div>
 
     <div className={"flex justify-center align-center"}>
