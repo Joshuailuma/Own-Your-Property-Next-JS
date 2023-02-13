@@ -37,6 +37,7 @@ query GetPropertyMinted($account: ID!) {
 }
 `;
 
+
 /**
  * A component
  * @returns an HTML 
@@ -94,7 +95,7 @@ let propertiesOwned = new Array()
                             ownerAddress={ownerAddress} 
                             propertyAddress={propertyAddress}
                             tokenId={tokenId}
-                            key={tokenId}
+                            key={tokenId+blockNumber}
                             />
                             </>
                             )
@@ -173,7 +174,7 @@ let propertiesOwned = new Array()
                             ownerAddress={ownerAddress} 
                             propertyAddress={propertyAddress}
                             tokenId={tokenId}
-                            key={tokenId}
+                            key={tokenId+blockNumber}
                             />
                             </>
                             )
@@ -227,7 +228,7 @@ let propertiesOwned = new Array()
                             owner={ownerAddress} 
                             propertyAddress={propertyAddress}
                             tokenId={tokenId} 
-                            key={tokenId}
+                            key={tokenId+blockNumber}
                             />
                             </>
                     
@@ -252,7 +253,7 @@ let propertiesOwned = new Array()
                         <div className={"pt-16"}>No Property here...</div>
                     ) : (
                       propertiesOwned.map((property) => {
-                        const { ownerAddress, propertyAddress, tokenId } = property
+                        const { ownerAddress, propertyAddress, tokenId, blockNumber } = property
 
                             return(
                               <>                                                   
@@ -260,7 +261,7 @@ let propertiesOwned = new Array()
                             ownerAddress={ownerAddress} 
                             propertyAddress={propertyAddress}
                             tokenId={tokenId}
-                            key={tokenId}
+                            key={tokenId+blockNumber}
                             />
                             </>                    
                             )
