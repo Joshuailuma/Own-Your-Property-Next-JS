@@ -1,4 +1,4 @@
-# Own Your Property
+# Own Your Property deployed to Goerli Network
 
 ## Overview
 

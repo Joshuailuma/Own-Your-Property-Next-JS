@@ -37,6 +37,7 @@ query GetPropertyMinted($account: ID!) {
 }
 `;
 
+
 /**
  * A component
  * @returns an HTML 
@@ -76,7 +77,7 @@ let propertiesOwned = new Array()
                     loading || !listedProperties || (Object.keys(listedProperties.propertyMinteds).length === 0) ? (
                         <div className={"pt-16"}>No Property here...</div>
                     ) : (
-                      listedProperties.propertyMinteds.map((property) => {
+                      listedProperties.propertyMinteds.map((property, index) => {
                         
                         
                         const { ownerAddress, propertyAddress, tokenId, blockNumber } = property
@@ -87,7 +88,6 @@ let propertiesOwned = new Array()
                           "tokenId": tokenId,
                           "blockNumber": blockNumber
                         })
-                        console.log(`TokenId from Property created ${tokenId}`);
 
                             return(
                               <>                                                       
@@ -95,7 +95,7 @@ let propertiesOwned = new Array()
                             ownerAddress={ownerAddress} 
                             propertyAddress={propertyAddress}
                             tokenId={tokenId}
-                            key={tokenId}
+                            key={index}
                             />
                             </>
                             )
@@ -118,8 +118,7 @@ let propertiesOwned = new Array()
                     loading || !listedProperties || (Object.keys(listedProperties.itemSolds).length === 0) ? (
                         <div className={"pt-16"}>No Property here...</div>
                     ) : (
-                      listedProperties.itemSolds.map((property) => {
-                        console.log(1111);
+                      listedProperties.itemSolds.map((property, index) => {
 
                         const { ownerAddress, propertyAddress, tokenId, blockNumber} = property
 
@@ -132,22 +131,11 @@ let propertiesOwned = new Array()
                             //Check if tokenId in the object in the array and one gotten from TheGraph is same
                             if(tokenId === elementInArray.tokenId){
                               //If this blockNumber from TheGraph is higher than the one in the object loop
-                              // console.log(`TOkenId is ${propertiesOwned[i].tokenId} block no is ${propertiesOwned[i].blockNumber}`);
                                 // It means it was recently bought
-                                if(blockNumber > elementInArray.blockNumber){
-                                  // console.log(`Replacing ${propertiesOwned[i].blockNumber} with ${blockNumber}`);
-
-                                  // console.log('Is greater than');
-
-                                  // console.log(elementInArray);
-                                  // console.log('Replacing');
-                                  // console.log(propertiesOwned[i]);
-
-
+                                if(blockNumber > elementInArray.blockNumber){                           
                                   // Replace the object in the array with the new one gotten from TheGraph
                                   //Remove the element in the last position in the array, 1 element, 
                                   propertiesOwned.splice(i, 1)
-                                  // console.log(propertiesOwned.length)
                                  // and add this obj
                                   propertiesOwned.push( {
                                     "ownerAddress": ownerAddress,
@@ -155,14 +143,10 @@ let propertiesOwned = new Array()
                                     "tokenId": tokenId,
                                     "blockNumber": blockNumber
                                   })
-                                  console.log("yes")
-                                  console.log(propertiesOwned.length)
                                   break;
                                 }
 
                               } else{
-                                console.log("No")
-                                
                                 // If we have gotten to the end of the loop
                                 if(i == propertiesOwned.length-1){
                                 // If the object from TheGraph is not in the array, add it to the array
@@ -172,7 +156,6 @@ let propertiesOwned = new Array()
                                   "tokenId": tokenId,
                                   "blockNumber": blockNumber
                                 })
-                                console.log('Gotten to end of loop')
                               }
 
                               
@@ -191,7 +174,7 @@ let propertiesOwned = new Array()
                             ownerAddress={ownerAddress} 
                             propertyAddress={propertyAddress}
                             tokenId={tokenId}
-                            key={tokenId}
+                            key={index}
                             />
                             </>
                             )
@@ -212,7 +195,7 @@ let propertiesOwned = new Array()
                     loading || !listedProperties || (Object.keys(listedProperties.transfers).length === 0) ? (
                         <div className={"pt-16"}>No Property here...</div>
                     ) : (
-                      listedProperties.transfers.map((property) => {
+                      listedProperties.transfers.map((property, index) => {
                         // Current property address will always be constant. Its actually not in the result gotten from TheGraph below
                         const propertyAddress = "0xF74EBb7bB8883E22a8Be30F8C2EDaF7f4B58f360"
                         
@@ -245,7 +228,7 @@ let propertiesOwned = new Array()
                             owner={ownerAddress} 
                             propertyAddress={propertyAddress}
                             tokenId={tokenId} 
-                            key={tokenId}
+                            key={index}
                             />
                             </>
                     
@@ -269,8 +252,8 @@ let propertiesOwned = new Array()
                     loading || !listedProperties || (Object.keys(propertiesOwned).length === 0) ? (
                         <div className={"pt-16"}>No Property here...</div>
                     ) : (
-                      propertiesOwned.map((property) => {
-                        const { ownerAddress, propertyAddress, tokenId } = property
+                      propertiesOwned.map((property, index) => {
+                        const { ownerAddress, propertyAddress, tokenId, blockNumber } = property
 
                             return(
                               <>                                                   
@@ -278,7 +261,7 @@ let propertiesOwned = new Array()
                             ownerAddress={ownerAddress} 
                             propertyAddress={propertyAddress}
                             tokenId={tokenId}
-                            key={tokenId}
+                            key={index}
                             />
                             </>                    
                             )
